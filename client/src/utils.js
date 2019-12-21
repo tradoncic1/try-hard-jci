@@ -1,5 +1,15 @@
-import { Redirect } from "react-router";
 import React from "react";
+import { ListGroupItem } from "reactstrap";
+import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faCalendarCheck,
+  faBed,
+  faMugHot,
+  faPeopleCarry,
+  faGlasses
+} from "@fortawesome/free-solid-svg-icons";
 
 export const BASE_URL = "http://192.168.1.104:4200";
 
@@ -18,29 +28,117 @@ export const parseJwt = token => {
   return JSON.parse(jsonPayload);
 };
 
-export const historyMap = activity => {
+export const historyMap = (activity, index) => {
   switch (activity[2]) {
     case 100:
-      return "Woke up on time!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faMugHot} />
+            Woke up on time!
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 200:
-      return "Worked hard!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBook} />
+            Worked hard!
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 300:
-      return "Took some time to rest.";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBed} />
+            Took some time to rest
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 400:
-      return "Got a 6 from a class.";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            Got a 6 from a class
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 401:
-      return "Got a 7 from a class.";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            Got a 7 from a class
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 402:
-      return "Got an 8 from a class.";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            Got an 8 from a class
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 403:
-      return "Got a 9 from a class.";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            Got a 9 from a class
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 404:
-      return "Got a 10 from a class!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            Got a 10 from a class!
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 500:
-      return "Got to the end of the semester!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faCalendarCheck} />
+            Got to the end of the semester!
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 600:
-      return "Was active for a 5 consecutive days!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBook} />
+            Was active for 5 consecutive days
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
     case 700:
-      return "Participated in volunteer work!";
+      return (
+        <ListGroupItem key={index}>
+          <div>
+            <FontAwesomeIcon icon={faPeopleCarry} />
+            Participated in volunteer work
+          </div>
+          <div>{moment(activity[1]).fromNow()}</div>
+        </ListGroupItem>
+      );
   }
 };

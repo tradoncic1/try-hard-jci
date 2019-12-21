@@ -15,10 +15,78 @@
 .Leaderboards-Wrap .list-group {
   width: 65%;
 }
+
 .Leaderboards-Wrap .card {
   padding: 15px;
   margin: 10px;
+}
+
+.Leaderboards-Row {
   display: flex;
-  flex-direction: row;
+  flex-direction: row !important;
   justify-content: space-between;
+  align-items: center;
+  line-height: 32px;
+}
+
+.Leaderboards-First {
+  width: 100%;
+}
+.Leaderboards-Second {
+  width: 85%;
+}
+.Leaderboards-Third {
+  width: 75%;
+}
+
+.Leaderboard-Name {
+  margin-left: 15px;
+}
+
+.Leaderboards-Row > div:first-of-type {
+  display: inline-flex;
+}
+
+.Leaderboards-Wrap .row {
+  margin: 0 !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Leaderboards-FirstImg {
+  width: 86px;
+  height: 86px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: lightseagreen;
+  border-radius: 50%;
+  line-height: 86px;
+  font-size: 42px;
+  color: white;
+}
+
+.Leaderboards-UserImg {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  background-color: lightseagreen;
+  border-radius: 50%;
+  line-height: 32px;
+  font-size: 16px;
+  color: white;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .Leaderboards-First {
+    width: 95%;
+  }
+  .Leaderboards-Wrap .list-group {
+    width: 90%;
+  }
+  .Leaderboards-Row {
+    width: 90% !important;
+  }
 }

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Input, Col, Row, Button, Label } from "reactstrap";
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
+import auth from "../../api/auth";
+import { parseJwt } from "../../utils";
 
 import "./Register.css";
-import auth from "../../api/auth";
 
 const Register = props => {
   const [input, setInput] = useState({
@@ -12,7 +13,8 @@ const Register = props => {
     surname: "",
     dob: "",
     email: "",
-    pw: ""
+    pw: "",
+    university: ""
   });
 
   const handleInput = event => {
@@ -36,7 +38,11 @@ const Register = props => {
     });
   };
 
-  return (
+  return localStorage.getItem("jwt") &&
+    parseJwt(localStorage.getItem("jwt")).exp >
+      Math.floor(Date.now() / 1000) ? (
+    <Redirect to="/profile" />
+  ) : (
     <div className="Register-Wrap">
       <Row>
         <Col md={7}>
@@ -75,6 +81,16 @@ const Register = props => {
                     </FormGroup>
                   </Col>
                 </Row>
+                <FormGroup>
+                  <Label for="email">email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="example@mail.com"
+                    onChange={handleInput}
+                  />
+                </FormGroup>
                 <Row form>
                   <Col md={6}>
                     <FormGroup>
@@ -102,11 +118,20 @@ const Register = props => {
                   </Col>
                 </Row>
                 <FormGroup>
-                  <Label>Date of birth</Label>
+                  <Label>date of birth</Label>
                   <Input
                     type="date"
                     name="dob"
                     id="dob"
+                    onChange={handleInput}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>university of study</Label>
+                  <Input
+                    type="text"
+                    name="university"
+                    id="university"
                     onChange={handleInput}
                   />
                 </FormGroup>

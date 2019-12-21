@@ -50,6 +50,16 @@
   padding-bottom: 15px;
 }
 
+.Profile-History li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.Profile-History li svg {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
 .Profile-Spinner {
   width: 100%;
   display: flex;

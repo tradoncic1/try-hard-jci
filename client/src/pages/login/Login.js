@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Input, Col, Button, Label, Row } from "reactstrap";
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import auth from "../../api/auth";
+import { parseJwt } from "../../utils";
 
 import "./Login.css";
 
@@ -33,7 +34,11 @@ const Login = props => {
 
   const { username, password } = input;
 
-  return (
+  return localStorage.getItem("jwt") &&
+    parseJwt(localStorage.getItem("jwt")).exp >
+      Math.floor(Date.now() / 1000) ? (
+    <Redirect to="/profile" />
+  ) : (
     <div className="Login-Wrap">
       <Row>
         <Col md={7}>
