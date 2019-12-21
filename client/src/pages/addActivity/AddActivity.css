@@ -1,0 +1,95 @@
+.view-container{
+    width: 100vw;
+    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    background-color: rgba(0,0,0,0.1);
+}
+.view-holder:hover{
+    transition-duration: 0.8s;
+    background-color: lightskyblue;
+}
+
+.activity-holder{
+    padding-top: 75px;
+    padding-right: 0px !important;
+    background-color: lightseagreen;
+    padding-left: 30px;
+    width: 100%;
+    height: 100%;
+    min-width: 50vw;
+    min-height: 50vh;
+    transition-duration: 0.8s;
+}
+.activity-holder:hover{
+    transition-duration: 0.8s;
+    background-color: lightskyblue;
+}
+.title{
+    text-align: center;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+}
+.duration-holder{
+    padding-right: 0px !important;
+    padding-top: 75px;
+    background-color: lightseagreen;
+    padding-left: 30px;
+    width: 100%;
+    height: 100%;
+    min-width: 50vw;
+    min-height: 50vh;
+    transition-duration: 0.8s;
+}
+.duration-holder:hover{
+    transition-duration: 0.8s;
+    background-color: lightskyblue;
+}
+.description-holder{
+    padding-right: 0px !important;
+    background-color: lightseagreen;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    min-width: 50vw;
+    min-height: 50vh;
+    transition-duration: 0.8s;
+}
+.description-holder:hover{
+    transition-duration: 0.8s;
+    background-color: lightskyblue;
+}
+.submit-holder{
+    padding-right: 0px !important;
+    background-color: lightseagreen;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    min-width: 50vw;
+    min-height: 50vh;
+    transition-duration: 0.8s;
+}
+.submit-holder:hover{
+    transition-duration: 0.8s;
+    background-color: lightskyblue;
+}
+.anim-holder{
+    opacity: 0;
+    padding: 30px;
+    height: 200px;
+    width: 150px;
+    transition-duration: 0.8s;
+}
+.card-holder:hover .anim-holder{
+    transition-duration: 0.8s;
+    opacity: 1;
+}
+h4{
+    color:white;
+}
+.btn-holder{
+    margin-left: 30px;
+}

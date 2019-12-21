@@ -6,6 +6,7 @@ import Profile from "./pages/profile/Profile";
 import NavBar from "./components/navBar/NavBar";
 
 import "./App.css";
+import AddActivity from "./pages/addActivity/AddActivity";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:username" component={Profile} />
+          <Route exact path="/newactivity" component={AddActivity} />
         </Switch>
       </Router>
     </div>
