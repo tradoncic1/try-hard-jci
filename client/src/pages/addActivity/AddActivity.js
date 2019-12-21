@@ -9,7 +9,10 @@ import {
   Row,
   Container,
   FormText,
-  Card
+  Card,
+  Popover,
+  PopoverHeader,
+  PopoverBody
 } from "reactstrap";
 import auth from "../../api/auth";
 import "./AddActivity.css";
@@ -20,8 +23,13 @@ import rest from "../../assets/anim-json/rest";
 import volunteer from "../../assets/anim-json/volunteer";
 import grade from "../../assets/anim-json/grade";
 import check from "../../assets/anim-json/check";
+import heart from "../../assets/anim-json/heart";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import { parseJwt } from "../../utils";
+import addAction from "../../api/addAction";
+import { Router, Redirect } from "react-router";
 
 const studyAnim = {
   loop: true,
@@ -53,6 +61,12 @@ const gradeAnim = {
   prerender: true,
   animationData: grade
 };
+const heartAnim = {
+  loop: true,
+  autoplay: true,
+  prerender: true,
+  animationData: heart
+};
 
 function AddActivity() {
   //Hooks
@@ -61,25 +75,54 @@ function AddActivity() {
   const [userEndTime, setUserEndTime] = useState(Date.now());
   const [userDesc, setUserDesc] = useState("");
   const [finished, setFinished] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [reroute, setReroute] = useState(false);
+  const toggle = () => setPopoverOpen(!popoverOpen);
 
-  function submitActivity() {
-    console.log(userActivity);
-    console.log(userDesc);
-    console.log(userStartTime);
-    console.log(userEndTime);
-  }
+  const submitActivity = async () => {
+    let model = {
+      username: parseJwt(localStorage.getItem("jwt")).username,
+      start_date: userStartTime,
+      end_date: userEndTime,
+      desc: userDesc
+    };
+
+    await addAction
+      .get(userActivity, model)
+      .then(res => {
+        setFinished(true);
+        console.log(res.data);
+        setTimeout(() => {
+          setReroute(true);
+        }, 3000);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally();
+  };
   const handleInputField = useCallback(event => {
     setUserDesc(event.target.value);
   });
   const handleStartDate = event => {
-      setUserStartTime(event);
-  }
+    setUserStartTime(event);
+  };
   const handleEndDate = event => {
-      setUserEndTime(event);
-  }
+    setUserEndTime(event);
+  };
+
   return (
     <>
       <Container className="view-container">
+        {finished ? (
+          <div className="submit-overlay">
+            <span className="success-text">
+              <ReactBodymovin options={heartAnim} />
+              Your activity has been added!
+            </span>
+          </div>
+        ) : null}
+        {reroute ? <Redirect to="/profile" /> : null}
         <NavBar />
         <Row>
           <Col lg={6} md={6} xs={12} sm={12}>
@@ -137,7 +180,20 @@ function AddActivity() {
                     <ReactBodymovin options={gradeAnim} />
                   </div>
                   <div className="btn-holder">
-                    <Button color="primary">New Grade</Button>
+                    <Button color="primary" id="Popover1">
+                      New Grade
+                    </Button>
+                    <Popover
+                      placement="bottom"
+                      isOpen={popoverOpen}
+                      target="Popover1"
+                      toggle={toggle}
+                    >
+                      <PopoverHeader>What grade did you get?</PopoverHeader>
+                      <PopoverBody>
+                        <Input></Input>
+                      </PopoverBody>
+                    </Popover>
                   </div>
                 </Col>
               </Row>
@@ -160,7 +216,7 @@ function AddActivity() {
                     onChange={handleEndDate}
                     showTimeSelect
                   />
-                  </Col>
+                </Col>
               </Row>
             </div>
           </Col>

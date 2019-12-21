@@ -86,13 +86,52 @@ app.post('/registration', (req, res) => {
         achiev : []
     }
     console.log(model)
-    db.user.insertOne(model, (error, docs) => {
-        if(error) throw error;
-        console.log("Successful register. Obj: ", docs)
-        res.send({response: "User created!", user: docs})
-    });
+    db.user.findOne({email : req.body.email}, (error, docs) => {
+        if(error)
+            throw error
+        if(docs){
+            console.log("Dupicate email attempt: ", req.body.email)
+            res.status(406)
+            res.send({response: "Email exists."})
+        }
+        else {
+            db.user.findOne({username: req.body.username}, (error, docs) => {
+                if(error)
+                    throw error
+                if(docs){
+                    console.log("Duplicate username attept: ", req.body.username)
+                    res.status(406)
+                    res.send({response: "Username exists"})
+                } else {
+                    db.user.insertOne(model, (error, docs) => {
+                        if(error) throw error;
+                        console.log("Successful register. Obj: ", docs)
+                        res.send({response: "User created!", user: docs})
+                    });
+                }
+            })
+        }
+    })
 })
-
+app.post('/updateuser', (req, res) => {
+    let model = req.param.body
+    let user = model.username
+    db.user.findOne({username: user}, (error, docs) => {
+        if(error)
+            throw error
+        if(docs){
+            db.user.replaceOne(
+                {username: user},
+                model, (errorUpd, docsUpd) => {
+                    if(error)
+                        throw error
+                    console.log(user, " has been successfuly updated.")
+                    res.send({response: "OK"})
+                }
+            )
+        }
+    })
+})
 app.post('/addaction/:key', (req, res) => {
     if(req){
         let user = req.body.username //
@@ -101,10 +140,10 @@ app.post('/addaction/:key', (req, res) => {
                 throw error
             if(docs){
                 let model = docs
-                let actionExp = getActionExp(praseInt(req.params.key)) //
+                let actionExp = getActionExp(parseInt(req.params.key)) //
                 let newExp = parseInt(model.exp) + actionExp
                 model.exp = newExp
-                let historyModel = [[req.body.start_date, req.body.end_date, parseInt(req.params.key)]] //[req.body.start_date, req.body.end_date, parseInt(req.params.key)]
+                let historyModel = [req.body.start_date, req.body.end_date, parseInt(req.params.key), req.body.desc]//[req.body.start_date, req.body.end_date, parseInt(req.params.key)]
                 model.history.push(historyModel)
                 db.user.replaceOne(
                     {username : user},
@@ -145,7 +184,7 @@ app.get('/getleaderboard/:skip', (req, res) => {
                 modelArray.push(model)
             });
             res.send(modelArray)
-            console.log(modelArray)
+            console.log("Leaderboard fetched")
         }
     })
 })
@@ -179,7 +218,7 @@ function getActionExp (reqKey){
     } else if(reqKey == 405){
         return 35
     } else if(reqKey == 500){
-        console.log("TODO implement end of semeter calc")
+        console.log("TODO implement end of semester calc")
         return 1
     } else if(reqKey == 600){
         return 100
