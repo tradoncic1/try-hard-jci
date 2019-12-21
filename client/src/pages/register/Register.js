@@ -12,7 +12,8 @@ const Register = props => {
     surname: "",
     dob: "",
     email: "",
-    pw: ""
+    pw: "",
+    university: ""
   });
 
   const handleInput = event => {
@@ -102,11 +103,20 @@ const Register = props => {
                   </Col>
                 </Row>
                 <FormGroup>
-                  <Label>Date of birth</Label>
+                  <Label>date of birth</Label>
                   <Input
                     type="date"
                     name="dob"
                     id="dob"
+                    onChange={handleInput}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>university of study</Label>
+                  <Input
+                    type="text"
+                    name="university"
+                    id="university"
                     onChange={handleInput}
                   />
                 </FormGroup>
