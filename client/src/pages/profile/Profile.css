@@ -1,0 +1,14 @@
+.Profile {
+  min-height: 100vh;
+  background-color: lightseagreen;
+}
+
+.Profile-Wrap {
+  padding: 14px;
+  padding-top: calc(75px + 5%);
+}
+
+.Profile-Header {
+  display: flex;
+  justify-content: center;
+}

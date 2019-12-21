@@ -5,7 +5,6 @@ import { withRouter } from "react-router";
 import auth from "../../api/auth";
 
 import "./Login.css";
-import { parseJwt } from "../../utils";
 
 const Login = props => {
   const [input, setInput] = useState({
@@ -22,12 +21,14 @@ const Login = props => {
     }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    auth.login(input).then(res => {
+    await auth.login(input).then(res => {
       localStorage.setItem("jwt", res.data.jwt);
     });
+
+    props.history.push("/profile");
   };
 
   const { username, password } = input;
