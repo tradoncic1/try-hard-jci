@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import { parseJwt, historyMap, privateWrapper } from "../../utils";
+import { withRouter } from "react-router";
+import { parseJwt, historyMap } from "../../utils";
 import profiles from "../../api/profiles";
 
 import "./Profile.css";
@@ -65,7 +65,7 @@ const Profile = props => {
     };
 
     fetchProfile();
-  }, []);
+  }, [props.match.params.username]);
 
   return (
     <div className="Profile">

@@ -19,6 +19,12 @@
 .Leaderboards-Wrap .card {
   padding: 15px;
   margin: 10px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.Leaderboards-Wrap .card:hover {
+  background-color: rgb(236, 236, 236);
 }
 
 .Leaderboards-Row {
