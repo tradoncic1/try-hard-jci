@@ -15,7 +15,7 @@ const db = mongojs(config.DB_URL)
 
 app.get('/user/:username', (req, res) => {
     let reqUser = req.params.username
-    db.user.find({username : reqUser}, (error, docs) => {
+    db.user.findOne({username : reqUser}, (error, docs) => {
         if(error)
             throw error
         if(docs != null){
@@ -93,26 +93,49 @@ app.post('/registration', (req, res) => {
 })
 
 app.get('/addaction/:key', (req, res) => {
-    let actionExp = getActionKey( parseInt(req.params.key))
-    console.log(actionExp) 
-    if(actionExp == -1){
-        res.status(404)
-        res.send({response: "Invalid action added."})
+    if(req){
+        let user = req.body.username //
+        db.user.findOne({username: user}, (error, docs) => {
+            if(error)
+                throw error
+            if(docs){
+                let model = docs
+                let actionExp = getActionExp(praseInt(req.params.key)) //
+                let newExp = parseInt(model.exp) + actionExp
+                model.exp = newExp
+                let historyModel = [[req.body.start_date, req.body.end_date, parseInt(req.params.key)]] //[req.body.start_date, req.body.end_date, parseInt(req.params.key)]
+                model.history.push(historyModel)
+                db.user.replaceOne(
+                    {username : user},
+                    model, (error, docs) => {
+                        if(error)
+                            throw error
+                        console.log("Set exp for action: ", req.params.key, "New exp: ", newExp)
+                        res.send({response: "OK", status: "EXP added"})
+                    }
+                )
+            }
+        })
     }
-    else {
-        if(req){
-            //let user = req.body.username
-            //db.user.update()
+})
+app.get('/addachiev/:key', (req, res) => {
+    let user = "hamdij4"//req.body.username
+    db.user.findOne({username: user}, (error, docs) => {
+        if (error)
+            throw error
+        //TODO Check achiev validity
+        if(docs){
+            
         }
-    }
+    })
 })
 
 app.listen(PORT, () => {
-    console.log("Backed on port : ", PORT)
+    console.log("Backend on port : ", PORT)
 })
 
 
-function getActionKey (reqKey){
+function getActionExp (reqKey){
     if(reqKey == 100){
         return 5
     } else if(reqKey == 200){
