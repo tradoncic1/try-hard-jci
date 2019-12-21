@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router";
-import { parseJwt, historyMap } from "../../utils";
+import { withRouter, Redirect } from "react-router";
+import { parseJwt, historyMap, privateWrapper } from "../../utils";
 import profiles from "../../api/profiles";
 
 import "./Profile.css";
@@ -33,6 +33,15 @@ const Profile = props => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (
+        parseJwt(localStorage.getItem("jwt")).exp <=
+          Math.floor(Date.now() / 1000) ||
+        !localStorage.getItem("jwt")
+      ) {
+        props.history.push("/login");
+        return;
+      }
+
       let profileResponse;
       let levelCalc;
       let xpCalc;
@@ -62,7 +71,6 @@ const Profile = props => {
 
   return (
     <div className="Profile">
-      {/* <NavBar /> */}
       <div className="Profile-Wrap">
         <Row>
           <Col md={4}></Col>

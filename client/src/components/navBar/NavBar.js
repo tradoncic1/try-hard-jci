@@ -8,7 +8,6 @@ import { withRouter } from "react-router";
 import "./NavBar.css";
 
 const NavBar = props => {
-  console.log(props);
   const NAV_COL = "rgba(31, 16, 247, 0.65)";
 
   const [navColor, setNavColor] = useState("lightseagreen");
@@ -39,6 +38,12 @@ const NavBar = props => {
     <div className="NavBar-Items">
       <div className="NavBar-Item" onClick={handleCollapseClose}>
         <Link to="/profile">Profile</Link>
+      </div>
+      <div className="NavBar-Item" onClick={handleCollapseClose}>
+        <Link to="/newactivity">Add Activity</Link>
+      </div>
+      <div className="NavBar-Item" onClick={handleCollapseClose}>
+        <Link to="/leaderboards">Leaderboards</Link>
       </div>
       <div className="NavBar-Item" onClick={handleCollapseClose}>
         <Link to="/login" onClick={handleLogOut}>
