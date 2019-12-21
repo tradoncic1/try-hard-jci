@@ -20,6 +20,7 @@ app.get('/user/:username', (req, res) => {
             throw error
         if(docs != null){
             console.log(docs)
+            docs.pw = "ngl, nice try fam"
             res.json(docs)
         }
         else{
@@ -92,7 +93,7 @@ app.post('/registration', (req, res) => {
     });
 })
 
-app.get('/addaction/:key', (req, res) => {
+app.post('/addaction/:key', (req, res) => {
     if(req){
         let user = req.body.username //
         db.user.findOne({username: user}, (error, docs) => {
@@ -126,6 +127,25 @@ app.get('/addachiev/:key', (req, res) => {
         //TODO Check achiev validity
         if(docs){
             
+        }
+    })
+})
+
+app.get('/getleaderboard/:skip', (req, res) => {
+    let limit = 15
+    let skip = parseInt(req.params.skip) || 0
+
+    db.user.find({}).skip(skip).limit(limit).sort({exp: -1}, (error, docs) => {
+        if(error)
+            throw error
+        if(docs){
+            let modelArray = []
+            docs.forEach(user => {
+                let model = {name: user.name, surname: user.surname, username: user.username, exp: user.exp}
+                modelArray.push(model)
+            });
+            res.send(modelArray)
+            console.log(modelArray)
         }
     })
 })
