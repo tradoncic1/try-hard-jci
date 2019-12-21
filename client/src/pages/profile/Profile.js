@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router";
 import { parseJwt, historyMap } from "../../utils";
 import profiles from "../../api/profiles";
-import NavBar from "../../components/navBar/NavBar";
 
 import "./Profile.css";
 import {
@@ -61,11 +60,9 @@ const Profile = props => {
     fetchProfile();
   }, []);
 
-  console.log(profileInfo, level);
-
   return (
     <div className="Profile">
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="Profile-Wrap">
         <Row>
           <Col md={4}></Col>
@@ -109,10 +106,11 @@ const Profile = props => {
                         <Spinner />
                       </div>
                     ) : (
-                      profileInfo.history.map(activity => {
-                        console.log(activity);
+                      profileInfo.history.map((activity, index) => {
                         return (
-                          <ListGroupItem>{historyMap(activity)}</ListGroupItem>
+                          <ListGroupItem key={index}>
+                            {historyMap(activity)}
+                          </ListGroupItem>
                         );
                       })
                     )}

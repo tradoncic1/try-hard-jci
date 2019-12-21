@@ -3,13 +3,15 @@ import { Collapse } from "reactstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from "react-router";
 
 import "./NavBar.css";
 
-const NavBar = () => {
+const NavBar = props => {
+  console.log(props);
   const NAV_COL = "rgba(31, 16, 247, 0.65)";
 
-  const [navColor, setNavColor] = useState("");
+  const [navColor, setNavColor] = useState("lightseagreen");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCollapseClose = () => setIsOpen(false);
@@ -18,7 +20,7 @@ const NavBar = () => {
     if (window.scrollY > 275) {
       setNavColor(NAV_COL);
     } else {
-      setNavColor("");
+      setNavColor("lightseagreen");
     }
   };
 
@@ -46,7 +48,8 @@ const NavBar = () => {
     </div>
   );
 
-  return (
+  return props.history.location.pathname == "/login" ||
+    props.history.location.pathname == "/register" ? null : (
     <div className="NavBar-Wrapper" style={{ backgroundColor: navColor }}>
       <div className="NavBar">
         <div className="NavBar-Home">
@@ -78,4 +81,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default withRouter(NavBar);
