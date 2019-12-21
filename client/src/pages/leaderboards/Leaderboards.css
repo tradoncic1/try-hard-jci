@@ -1,0 +1,24 @@
+.Leaderboards {
+  min-height: 100vh;
+  max-width: 100vw;
+}
+
+.Leaderboards-Wrap {
+  width: 100%;
+  padding-top: calc(75px + 5%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Leaderboards-Wrap .list-group {
+  width: 65%;
+}
+.Leaderboards-Wrap .card {
+  padding: 15px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

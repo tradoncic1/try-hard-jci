@@ -38,79 +38,95 @@ const Register = props => {
 
   return (
     <div className="Register-Wrap">
-      <div className="Register-Form">
-        <h2>register</h2>
-        <Form className="form" onSubmit={handleSubmit}>
-          <Row form>
-            <Col md={6}>
-              <FormGroup>
-                <Label for="name">first name</Label>
-                <Input
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="John"
-                  onChange={handleInput}
-                />
-              </FormGroup>
-            </Col>
-            <Col md={6}>
-              <FormGroup>
-                <Label for="surname">last name</Label>
-                <Input
-                  type="text"
-                  name="surname"
-                  id="surname"
-                  placeholder="Smith"
-                  onChange={handleInput}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row form>
-            <Col md={6}>
-              <FormGroup>
-                <Label for="username">username</Label>
-                <Input
-                  type="username"
-                  name="username"
-                  id="username"
-                  placeholder="username"
-                  onChange={handleInput}
-                />
-              </FormGroup>
-            </Col>
-            <Col md={6}>
-              <FormGroup>
-                <Label for="password">password</Label>
-                <Input
-                  type="password"
-                  name="pw"
-                  id="pw"
-                  placeholder="********"
-                  onChange={handleInput}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <FormGroup>
-            <Label>Date of birth</Label>
-            <Input type="date" name="dob" id="dob" onChange={handleInput} />
-          </FormGroup>
-          <Col md={12}>
-            <Button type="submit" color="primary" onClick={handleSubmit}>
-              register
-            </Button>
-          </Col>
-          <br />
-          <br />
-          <div>
-            Already have an account?
-            <br />
-            <Link to="/login">Log in here!</Link>
+      <Row>
+        <Col md={7}>
+          <div className="Register-Logo-Wrap">
+            <h1>TryHard</h1>
           </div>
-        </Form>
-      </div>
+        </Col>
+        <Col md={5}>
+          <div className="Register-Form-Wrap">
+            <div className="Register-Form">
+              <h2>register</h2>
+              <Form className="form" onSubmit={handleSubmit}>
+                <Row form>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="name">first name</Label>
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="John"
+                        onChange={handleInput}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="surname">last name</Label>
+                      <Input
+                        type="text"
+                        name="surname"
+                        id="surname"
+                        placeholder="Smith"
+                        onChange={handleInput}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row form>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="username">username</Label>
+                      <Input
+                        type="username"
+                        name="username"
+                        id="username"
+                        placeholder="username"
+                        onChange={handleInput}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="password">password</Label>
+                      <Input
+                        type="password"
+                        name="pw"
+                        id="pw"
+                        placeholder="********"
+                        onChange={handleInput}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <FormGroup>
+                  <Label>Date of birth</Label>
+                  <Input
+                    type="date"
+                    name="dob"
+                    id="dob"
+                    onChange={handleInput}
+                  />
+                </FormGroup>
+                <Col md={12}>
+                  <Button type="submit" color="primary" onClick={handleSubmit}>
+                    register
+                  </Button>
+                </Col>
+                <br />
+                <br />
+                <div>
+                  Already have an account?
+                  <br />
+                  <Link to="/login">Log in here!</Link>
+                </div>
+              </Form>
+            </div>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };

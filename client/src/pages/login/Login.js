@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, FormGroup, Input, Col, Button, Label } from "reactstrap";
+import { Form, FormGroup, Input, Col, Button, Label, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import auth from "../../api/auth";
@@ -35,49 +35,60 @@ const Login = props => {
 
   return (
     <div className="Login-Wrap">
-      <div className="Login-Form">
-        <h2>login</h2>
-        <Form className="form" onSubmit={handleSubmit}>
-          <Col>
-            <FormGroup>
-              <Label for="username">username</Label>
-              <Input
-                type="username"
-                name="username"
-                id="username"
-                placeholder="username"
-                value={username}
-                onChange={handleInput}
-              />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="password">password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="********"
-                value={password}
-                onChange={handleInput}
-              />
-            </FormGroup>
-          </Col>
-          <Col md={12}>
-            <Button type="submit" color="primary" onClick={handleSubmit}>
-              log in
-            </Button>
-          </Col>
-          <br />
-          <br />
-          <div>
-            Don't have an account?
-            <br />
-            <Link to="/register">Register here!</Link>
+      <Row>
+        <Col md={7}>
+          <div className="Login-Logo-Wrap">
+            <h1>TryHard</h1>
           </div>
-        </Form>
-      </div>
+        </Col>
+        <Col md={5}>
+          <div className="Login-Form-Wrap">
+            <div className="Login-Form">
+              <h2>login</h2>
+              <Form className="form" onSubmit={handleSubmit}>
+                <Col>
+                  <FormGroup>
+                    <Label for="username">username</Label>
+                    <Input
+                      type="username"
+                      name="username"
+                      id="username"
+                      placeholder="username"
+                      value={username}
+                      onChange={handleInput}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col>
+                  <FormGroup>
+                    <Label for="password">password</Label>
+                    <Input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="********"
+                      value={password}
+                      onChange={handleInput}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md={12}>
+                  <Button type="submit" color="primary" onClick={handleSubmit}>
+                    log in
+                  </Button>
+                </Col>
+                <br />
+                <br />
+                <div>
+                  Don't have an account?
+                  <br />
+                  <Link to="/register">Register here!</Link>
+                </div>
+              </Form>
+            </div>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };
