@@ -4,15 +4,7 @@ import { parseJwt, historyMap, privateWrapper } from "../../utils";
 import profiles from "../../api/profiles";
 
 import "./Profile.css";
-import {
-  Col,
-  Row,
-  Card,
-  Progress,
-  Spinner,
-  ListGroup,
-  ListGroupItem
-} from "reactstrap";
+import { Col, Row, Card, Progress, Spinner, ListGroup } from "reactstrap";
 
 const Profile = props => {
   const [profileInfo, setProfileInfo] = useState({
@@ -23,7 +15,8 @@ const Profile = props => {
     pw: "",
     dob: "",
     activity: 0,
-    exp: 0
+    exp: 0,
+    history: []
   });
 
   const [level, setLevel] = useState(1);
@@ -34,9 +27,9 @@ const Profile = props => {
   useEffect(() => {
     const fetchProfile = async () => {
       if (
+        !localStorage.getItem("jwt") ||
         parseJwt(localStorage.getItem("jwt")).exp <=
-          Math.floor(Date.now() / 1000) ||
-        !localStorage.getItem("jwt")
+          Math.floor(Date.now() / 1000)
       ) {
         props.history.push("/login");
         return;
@@ -45,20 +38,25 @@ const Profile = props => {
       let profileResponse;
       let levelCalc;
       let xpCalc;
+      let historyRev;
       setIsLoading(true);
       if (props.match.params.username) {
         profileResponse = await profiles.get(props.match.params.username);
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
+        historyRev = profileResponse.data.history.reverse();
       } else {
         profileResponse = await profiles.get(
           parseJwt(localStorage.getItem("jwt")).username
         );
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
+        historyRev = profileResponse.data.history.reverse();
       }
 
       setProfileInfo(profileResponse.data);
+
+      setProfileInfo(prevInfo => ({ ...prevInfo, history: historyRev }));
 
       setLevel(levelCalc);
       setExperience(xpCalc);
@@ -115,11 +113,7 @@ const Profile = props => {
                       </div>
                     ) : (
                       profileInfo.history.map((activity, index) => {
-                        return (
-                          <ListGroupItem key={index}>
-                            {historyMap(activity)}
-                          </ListGroupItem>
-                        );
+                        return historyMap(activity, index);
                       })
                     )}
                   </ListGroup>

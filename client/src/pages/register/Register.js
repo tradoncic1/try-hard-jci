@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Input, Col, Row, Button, Label } from "reactstrap";
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
+import auth from "../../api/auth";
+import { parseJwt } from "../../utils";
 
 import "./Register.css";
-import auth from "../../api/auth";
 
 const Register = props => {
   const [input, setInput] = useState({
@@ -37,7 +38,11 @@ const Register = props => {
     });
   };
 
-  return (
+  return localStorage.getItem("jwt") &&
+    parseJwt(localStorage.getItem("jwt")).exp >
+      Math.floor(Date.now() / 1000) ? (
+    <Redirect to="/profile" />
+  ) : (
     <div className="Register-Wrap">
       <Row>
         <Col md={7}>

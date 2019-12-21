@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import leaderboards from "../../api/leaderboards";
-import { Spinner, Col, Row, ListGroup, ListGroupItem, Card } from "reactstrap";
+import { Spinner, Col, Row, ListGroup, Card } from "reactstrap";
 
 import "./Leaderboards.css";
+import { parseJwt } from "../../utils";
+import { Redirect, withRouter } from "react-router";
 
-const Leaderboards = () => {
+const Leaderboards = props => {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    if (
+      !localStorage.getItem("jwt") ||
+      parseJwt(localStorage.getItem("jwt")).exp <= Math.floor(Date.now() / 1000)
+    ) {
+      props.history.push("/login");
+      return;
+    }
     const fetchLeaderboards = async () => {
       setIsLoading(true);
       await leaderboards.get(0).then(res => setUsers(res.data));
