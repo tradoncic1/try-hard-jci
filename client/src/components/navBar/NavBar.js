@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Collapse } from "reactstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 import "./NavBar.css";
 
@@ -51,8 +53,10 @@ const NavBar = () => {
           <Link to="/">TryHard</Link>
         </div>
         <div className="NavBar-Collapsable">
-          <i
-            className="NavBar-Collapsable--Icon fas fa-bars"
+          <FontAwesomeIcon
+            className="NavBar-Collapsable--Icon"
+            size="lg"
+            icon={faBars}
             onClick={() => {
               setIsOpen(!isOpen);
               window.scrollY < 275 && isOpen
