@@ -71,6 +71,7 @@
     min-width: 50vw;
     min-height: 50vh;
     transition-duration: 0.8s;
+    float:right;
 }
 .submit-holder:hover{
     transition-duration: 0.8s;
@@ -87,9 +88,18 @@
     transition-duration: 0.8s;
     opacity: 1;
 }
+.submit-holder.card-holder{
+    width: max-content;
+    float:right;
+}
 h4{
     color:white;
 }
 .btn-holder{
     margin-left: 30px;
+}
+.description-box{
+    height: 200px;
+    margin-top: 30px;
+    margin-right: 60px;
 }
