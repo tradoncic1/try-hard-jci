@@ -36,6 +36,15 @@ const EditProfile = props => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      if (
+        !localStorage.getItem("jwt") ||
+        parseJwt(localStorage.getItem("jwt")).exp <=
+          Math.floor(Date.now() / 1000)
+      ) {
+        props.history.push("/login");
+        return;
+      }
+
       await profiles.get(jwtUsername).then(res => {
         setUser(res.data);
         setInput(res.data);

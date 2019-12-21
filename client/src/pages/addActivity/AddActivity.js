@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Form,
   FormGroup,
@@ -12,7 +12,10 @@ import {
   Card,
   Popover,
   PopoverHeader,
-  PopoverBody
+  PopoverBody,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText
 } from "reactstrap";
 import auth from "../../api/auth";
 import "./AddActivity.css";
@@ -29,230 +32,161 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { parseJwt } from "../../utils";
 import addAction from "../../api/addAction";
-import { Router, Redirect } from "react-router";
+import { Router, Redirect, withRouter } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faBed,
+  faPeopleCarry,
+  faGlasses
+} from "@fortawesome/free-solid-svg-icons";
 
-const studyAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: study
-};
-const checkAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: check
-};
-const restAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: rest
-};
-const volunteerAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: volunteer
-};
-const gradeAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: grade
-};
-const heartAnim = {
-  loop: true,
-  autoplay: true,
-  prerender: true,
-  animationData: heart
-};
-
-function AddActivity() {
+const AddActivity = props => {
   //Hooks
   const [userActivity, setUserActivity] = useState(0);
-  const [userStartTime, setUserStartTime] = useState(Date.now());
-  const [userEndTime, setUserEndTime] = useState(Date.now());
   const [userDesc, setUserDesc] = useState("");
+  const [time, setTime] = useState(0);
   const [finished, setFinished] = useState(false);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [reroute, setReroute] = useState(false);
-  const toggle = () => setPopoverOpen(!popoverOpen);
+
+  useEffect(() => {
+    if (
+      !localStorage.getItem("jwt") ||
+      parseJwt(localStorage.getItem("jwt")).exp <= Math.floor(Date.now() / 1000)
+    ) {
+      props.history.push("/login");
+      return;
+    }
+  }, []);
 
   const submitActivity = async () => {
     let model = {
       username: parseJwt(localStorage.getItem("jwt")).username,
-      start_date: userStartTime,
-      end_date: userEndTime,
+      time: time,
       desc: userDesc
     };
+
+    console.log(model);
 
     await addAction
       .get(userActivity, model)
       .then(res => {
         setFinished(true);
         console.log(res.data);
-        setTimeout(() => {
-          setReroute(true);
-        }, 3000);
+
+        setTime(0);
+        setUserDesc("");
+        setUserActivity(0);
       })
       .catch(err => {
         console.log(err);
-      })
-      .finally();
+      });
   };
+
+  const handleTime = event => {
+    setTime(event.target.value);
+  };
+
   const handleInputField = useCallback(event => {
     setUserDesc(event.target.value);
   });
-  const handleStartDate = event => {
-    setUserStartTime(event);
-  };
-  const handleEndDate = event => {
-    setUserEndTime(event);
-  };
 
   return (
-    <>
-      <Container className="view-container">
-        {finished ? (
-          <div className="submit-overlay">
-            <span className="success-text">
-              <ReactBodymovin options={heartAnim} />
-              Your activity has been added!
-            </span>
-          </div>
-        ) : null}
-        {reroute ? <Redirect to="/profile" /> : null}
-        <NavBar />
-        <Row>
-          <Col lg={6} md={6} xs={12} sm={12}>
-            <div className="activity-holder">
-              <div className="title">What do you want to do?</div>
-              <Row>
-                <Col
-                  className="card-holder"
-                  onClick={() => {
-                    setUserActivity(200);
-                  }}
-                >
-                  <div className="anim-holder">
-                    <ReactBodymovin options={studyAnim} />
-                  </div>
-                  <div className="btn-holder">
-                    <Button color="primary">Study</Button>
-                  </div>
-                </Col>
-                <Col
-                  className="card-holder"
-                  className="card-holder"
-                  onClick={() => {
-                    setUserActivity(300);
-                  }}
-                >
-                  <div className="anim-holder">
-                    <ReactBodymovin options={restAnim} />
-                  </div>
-                  <div className="btn-holder">
-                    <Button color="primary">Rest Up</Button>
-                  </div>
-                </Col>
-                <Col
-                  className="card-holder"
-                  onClick={() => {
-                    setUserActivity(700);
-                  }}
-                >
-                  <div className="anim-holder">
-                    <ReactBodymovin options={volunteerAnim} />
-                  </div>
-                  <div className="btn-holder">
-                    <Button color="primary">Volunteer</Button>
-                  </div>
-                </Col>
-                <Col
-                  className="card-holder"
-                  className="card-holder"
-                  onClick={() => {
-                    setUserActivity(400);
-                  }}
-                >
-                  <div className="anim-holder">
-                    <ReactBodymovin options={gradeAnim} />
-                  </div>
-                  <div className="btn-holder">
-                    <Button color="primary" id="Popover1">
-                      New Grade
-                    </Button>
-                    <Popover
-                      placement="bottom"
-                      isOpen={popoverOpen}
-                      target="Popover1"
-                      toggle={toggle}
-                    >
-                      <PopoverHeader>What grade did you get?</PopoverHeader>
-                      <PopoverBody>
-                        <Input></Input>
-                      </PopoverBody>
-                    </Popover>
-                  </div>
-                </Col>
-              </Row>
+    <div className="AddActivity">
+      <Row className="AddActivity-Row">
+        <Col md={6} className="AddActivity-Activities">
+          <Row className="AddActivity-RowMinor">
+            <Col
+              xs={6}
+              className="AddActivity-Study Activity"
+              onClick={() => setUserActivity(200)}
+            >
+              <FontAwesomeIcon icon={faBook} />
+              Study
+            </Col>
+            <Col
+              xs={6}
+              className="AddActivity-Rest Activity"
+              onClick={() => setUserActivity(300)}
+            >
+              <FontAwesomeIcon icon={faBed} />
+              Rest
+            </Col>
+          </Row>
+          <Row className="AddActivity-RowMinor">
+            <Col
+              xs={6}
+              className="AddActivity-Volunteer Activity"
+              onClick={() => setUserActivity(700)}
+            >
+              <FontAwesomeIcon icon={faPeopleCarry} />
+              Volunteer
+            </Col>
+            <Col
+              xs={6}
+              className="AddActivity-Grade Activity"
+              onClick={() => setUserActivity(400)}
+            >
+              <FontAwesomeIcon icon={faGlasses} />
+              Grade
+            </Col>
+          </Row>
+        </Col>
+        <Col md={6} className="AddActivity-Time">
+          {userActivity === 0 ? (
+            <div>Select an activity</div>
+          ) : userActivity === 200 ? (
+            <div>
+              How much time did you spend studying?
+              <Input type="number" min={0} max={12} onChange={handleTime} />
+              <span style={{ fontSize: "18px" }}>
+                (Enter the amount in hours)
+              </span>
             </div>
-          </Col>
-          <Col lg={6} md={6} xs={12} sm={12}>
-            <div className="duration-holder">
-              <div className="title">How long are you doing it for?</div>
-              <Row>
-                <Col>
-                  <DatePicker
-                    selected={userStartTime}
-                    onChange={handleStartDate}
-                    showTimeSelect
-                  />
-                </Col>
-                <Col>
-                  <DatePicker
-                    selected={userEndTime}
-                    onChange={handleEndDate}
-                    showTimeSelect
-                  />
-                </Col>
-              </Row>
+          ) : userActivity === 300 ? (
+            <div>
+              How much time did you spend resting?
+              <Input type="number" min={0} onChange={handleTime} />
+              <span style={{ fontSize: "18px" }}>
+                (Enter the amount in hours)
+              </span>
             </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={6} md={6} xs={12} sm={12}>
-            <div className="description-holder">
-              <FormGroup className="description-box">
-                <div className="title">Anything special to add?</div>
-                <Input
-                  onChange={handleInputField}
-                  type="textarea"
-                  name="text"
-                  id="descText"
-                />
-              </FormGroup>
+          ) : userActivity === 700 ? (
+            <div>
+              How much time did you spend volunteering?
+              <Input type="number" min={0} onChange={handleTime} />
+              <span style={{ fontSize: "18px" }}>
+                (Enter the amount in hours)
+              </span>
             </div>
-          </Col>
-          <Col lg={6} md={6} xs={12} sm={12}>
-            <div className="submit-holder">
-              <Col className="card-holder">
-                <div className="anim-holder">
-                  <ReactBodymovin options={checkAnim} />
-                </div>
-                <div className="btn-holder">
-                  <Button color="primary" onClick={submitActivity}>
-                    Submit
-                  </Button>
-                </div>
-              </Col>
+          ) : (
+            <div>
+              What grade did you get?
+              <Input type="number" min={5} max={10} onChange={handleTime} />
+              <span style={{ fontSize: "18px" }}></span>
             </div>
-          </Col>
-        </Row>
-      </Container>
-    </>
+          )}
+        </Col>
+      </Row>
+      <Row className="AddActivity-Row">
+        <Col md={6} className="AddActivity-Description">
+          <Label>Something to add?</Label>
+          <Input type="textarea" onChange={handleInputField} />
+        </Col>
+        <Col md={6} className="AddActivity-Submit" onClick={submitActivity}>
+          <span
+            style={{
+              color:
+                userActivity === 0 || time === 0
+                  ? "rgba(0, 0, 0, 0.2)"
+                  : "white"
+            }}
+          >
+            submit
+          </span>
+        </Col>
+      </Row>
+    </div>
   );
-}
+};
 
-export default AddActivity;
+export default withRouter(AddActivity);
