@@ -1,10 +1,10 @@
-.Login-Wrap {
-  width: 100vw;
-  height: 100vh;
+.Register-Wrap {
+  min-width: 100vw;
+  min-height: 100vh;
   background-color: purple;
 }
 
-.Login-Form {
+.Register-Form {
   position: absolute;
   left: 17.5%;
   top: 20%;
@@ -14,12 +14,13 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 }
 
-.Login-Form h2 {
+.Register-Form h2 {
   border-bottom: 2px solid lightblue;
 }
 
-.Login-Form .btn {
+.Register-Form .btn {
   width: 100%;
 }
