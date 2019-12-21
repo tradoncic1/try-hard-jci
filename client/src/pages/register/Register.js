@@ -135,7 +135,8 @@ const Register = props => {
                     onChange={handleInput}
                   />
                 </FormGroup>
-                <Col md={12}>
+
+                <Col className="Register-ButtonCol">
                   <Button type="submit" color="primary" onClick={handleSubmit}>
                     register
                   </Button>

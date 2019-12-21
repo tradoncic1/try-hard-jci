@@ -10,11 +10,20 @@
   top: 20%;
   width: 65%;
   background-color: white;
-  border: 1px solid lightskyblue;
   border-radius: 4px;
   padding: 15px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.Login-Form form {
+  width: 100%;
+}
+
+.Login-ButtonCol {
+  display: flex;
+  justify-content: center;
 }
 
 .Login-Form-Wrap {
@@ -42,18 +51,6 @@
     rgba(98, 187, 214, 0.9) -32%,
     rgba(110, 57, 128, 0.9) 55%
   );
-}
-
-.Login-Logo-Wrap h1 {
-  border-bottom: 1px solid white;
-}
-
-.Login-Form h2 {
-  border-bottom: 2px solid lightblue;
-}
-
-.Login-Form .btn {
-  width: 100%;
 }
 
 @media screen and (max-width: 768px) {

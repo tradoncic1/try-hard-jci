@@ -53,7 +53,6 @@ const Login = props => {
               <Form className="form" onSubmit={handleSubmit}>
                 <Col>
                   <FormGroup>
-                    <Label for="username">username</Label>
                     <Input
                       type="username"
                       name="username"
@@ -66,18 +65,17 @@ const Login = props => {
                 </Col>
                 <Col>
                   <FormGroup>
-                    <Label for="password">password</Label>
                     <Input
                       type="password"
                       name="password"
                       id="password"
-                      placeholder="********"
+                      placeholder="password"
                       value={password}
                       onChange={handleInput}
                     />
                   </FormGroup>
                 </Col>
-                <Col md={12}>
+                <Col className="Login-ButtonCol">
                   <Button type="submit" color="primary" onClick={handleSubmit}>
                     log in
                   </Button>

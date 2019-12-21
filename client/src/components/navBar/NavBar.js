@@ -46,6 +46,9 @@ const NavBar = props => {
         <Link to="/leaderboards">Leaderboards</Link>
       </div>
       <div className="NavBar-Item" onClick={handleCollapseClose}>
+        <Link to="/editprofile">Edit Profile</Link>
+      </div>
+      <div className="NavBar-Item" onClick={handleCollapseClose}>
         <Link to="/login" onClick={handleLogOut}>
           Log Out
         </Link>

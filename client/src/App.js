@@ -8,6 +8,7 @@ import NavBar from "./components/navBar/NavBar";
 import "./App.css";
 import AddActivity from "./pages/addActivity/AddActivity";
 import Leaderboards from "./pages/leaderboards/Leaderboards";
+import EditProfile from "./pages/editProfile/EditProfile";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route exact path="/profile/:username" component={Profile} />
           <Route exact path="/newactivity" component={AddActivity} />
           <Route exact path="/leaderboards" component={Leaderboards} />
+          <Route exact path="/editProfile" component={EditProfile} />
         </Switch>
       </Router>
     </div>
