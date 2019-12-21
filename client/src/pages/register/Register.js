@@ -81,6 +81,16 @@ const Register = props => {
                     </FormGroup>
                   </Col>
                 </Row>
+                <FormGroup>
+                  <Label for="email">email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="example@mail.com"
+                    onChange={handleInput}
+                  />
+                </FormGroup>
                 <Row form>
                   <Col md={6}>
                     <FormGroup>
