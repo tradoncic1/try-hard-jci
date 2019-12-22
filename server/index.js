@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 4200;
 const cors_ = require("cors");
+const path = require('path')
 
 app.use(cors_());
 app.use(bodyParser.json());
@@ -259,6 +260,10 @@ app.get("/getleaderboard/:skip", (req, res) => {
         console.log("Leaderboard fetched");
       }
     });
+});
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 app.listen(PORT, () => {
