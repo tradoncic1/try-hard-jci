@@ -51,9 +51,7 @@ const Profile = props => {
         );
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
-        historyRev = profileResponse.data.history.reverse();
-        console.log(historyRev);
-
+        historyRev = profileResponse.data.history;
         console.log(profileResponse.data);
       }
 
@@ -74,7 +72,7 @@ const Profile = props => {
     <div className="Profile">
       <div className="Profile-Wrap">
         <Row>
-          <Col md={4}></Col>
+          <Col md={4} />
           <Col md={4}>
             {isLoading ? (
               <div className="Profile-Header">
@@ -83,6 +81,14 @@ const Profile = props => {
             ) : (
               <Card className="Profile-Card">
                 <div className="Profile-Header">
+                  {profileInfo.avatar ? (
+                    <img className="Profile-Img" src={profileInfo.avatar} />
+                  ) : (
+                    <div className="Profile-Img">
+                      {profileInfo.name[0]}
+                      {profileInfo.surname[0]}
+                    </div>
+                  )}
                   <h2>
                     {profileInfo.name} {profileInfo.surname}
                   </h2>
@@ -97,10 +103,24 @@ const Profile = props => {
                   </div>
                   <Progress value={(experience / 75) * 100} />
                 </div>
+                <div className="Profile-Timers">
+                  <div>
+                    <h2>{profileInfo.timers.study}</h2>
+                    <span>Studying</span>
+                  </div>
+                  <div>
+                    <h2>{profileInfo.timers.rest}</h2>
+                    <span>Rest</span>
+                  </div>
+                  <div>
+                    <h2>{profileInfo.timers.volunteering}</h2>
+                    <span>Volunteer</span>
+                  </div>
+                </div>
               </Card>
             )}
           </Col>
-          <Col md={4}></Col>
+          <Col md={4} />
         </Row>
         <div className="Profile-Stats">
           <Row>

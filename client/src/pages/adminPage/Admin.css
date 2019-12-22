@@ -1,0 +1,29 @@
+.AdminPage {
+  width: 100vw;
+  max-width: 100vw;
+  padding-top: 95px;
+  background-color: lightseagreen;
+}
+
+.ApprovalContainer {
+  width: 70vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ApprovalHolder {
+  background-color: white;
+  height: 15vh !important;
+  width: 65vw !important;
+  padding: 16px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

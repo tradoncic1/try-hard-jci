@@ -8,6 +8,7 @@ import { parseJwt } from "../../utils";
 import "./Register.css";
 
 const Register = props => {
+  const emailRegex = "";
   const [input, setInput] = useState({
     name: "",
     surname: "",
@@ -137,7 +138,20 @@ const Register = props => {
                 </FormGroup>
 
                 <Col className="Register-ButtonCol">
-                  <Button type="submit" color="primary" onClick={handleSubmit}>
+                  <Button
+                    disabled={
+                      !input.dob ||
+                      !input.email ||
+                      !input.name ||
+                      !input.surname ||
+                      !input.dob ||
+                      !input.password ||
+                      !input.university
+                    }
+                    type="submit"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
                     register
                   </Button>
                 </Col>

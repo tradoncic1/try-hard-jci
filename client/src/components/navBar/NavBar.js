@@ -15,24 +15,9 @@ const NavBar = props => {
 
   const handleCollapseClose = () => setIsOpen(false);
 
-  const listenScrollEvent = e => {
-    if (window.scrollY > 275) {
-      setNavColor(NAV_COL);
-    } else {
-      setNavColor("lightseagreen");
-    }
-  };
-
   const handleLogOut = () => {
     localStorage.removeItem("jwt");
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", listenScrollEvent);
-    return () => {
-      window.removeEventListener("scroll", listenScrollEvent);
-    };
-  }, []);
 
   const itemsMarkup = (
     <div className="NavBar-Items">
@@ -57,8 +42,9 @@ const NavBar = props => {
   );
 
   return props.history.location.pathname == "/login" ||
-    props.history.location.pathname == "/register" ? null : (
-    <div className="NavBar-Wrapper" style={{ backgroundColor: navColor }}>
+    props.history.location.pathname == "/register" ||
+    props.history.location.pathname === "/" ? null : (
+    <div className="NavBar-Wrapper">
       <div className="NavBar">
         <div className="NavBar-Home">
           <Link to="/">TryHard</Link>
@@ -70,9 +56,6 @@ const NavBar = props => {
             icon={faBars}
             onClick={() => {
               setIsOpen(!isOpen);
-              window.scrollY < 275 && isOpen
-                ? setNavColor("")
-                : setNavColor(NAV_COL);
             }}
           />
         </div>

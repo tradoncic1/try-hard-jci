@@ -1,12 +1,13 @@
 .NavBar-Wrapper {
   width: 100%;
   position: fixed;
-  transition: background-color 0.45s ease;
+  background-color: rgba(28, 133, 127, 0.767);
   display: flex;
   flex-direction: column;
   color: white;
   padding-right: 15px;
   z-index: 9999;
+  box-shadow: 0px 0px 3px black;
 }
 
 .NavBar {
@@ -36,14 +37,21 @@
 
 .NavBar-Collapsable--Content {
   width: 100vw;
-  height: 75px;
+  height: 190px;
   padding-top: 25px;
 }
 
 .NavBar-Collapsable--Content .NavBar-Items {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-evenly;
+  align-items: center;
+}
+
+.NavBar-Collapsable--Content .NavBar-Item {
+  margin-bottom: 5px;
+  font-size: 18px;
 }
 
 .NavBar-Item {

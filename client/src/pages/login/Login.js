@@ -25,8 +25,6 @@ const Login = props => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    console.log(input);
-
     await auth.login(input).then(res => {
       localStorage.setItem("jwt", res.data.jwt);
     });
@@ -78,7 +76,12 @@ const Login = props => {
                   </FormGroup>
                 </Col>
                 <Col className="Login-ButtonCol">
-                  <Button type="submit" color="primary" onClick={handleSubmit}>
+                  <Button
+                    disabled={!username || !password}
+                    type="submit"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
                     log in
                   </Button>
                 </Col>

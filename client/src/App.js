@@ -9,6 +9,7 @@ import "./App.css";
 import AddActivity from "./pages/addActivity/AddActivity";
 import Leaderboards from "./pages/leaderboards/Leaderboards";
 import EditProfile from "./pages/editProfile/EditProfile";
+import AdminPage from "./pages/adminPage/Admin";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route exact path="/newactivity" component={AddActivity} />
           <Route exact path="/leaderboards" component={Leaderboards} />
           <Route exact path="/editProfile" component={EditProfile} />
+          <Route exact path="/adminPage" component={AdminPage} />
         </Switch>
       </Router>
     </div>
