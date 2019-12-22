@@ -272,9 +272,9 @@ app.post("/addaction/:key", (req, res) => {
     if (error) throw error;
     if (docs) {
       let model = docs;
+      let gradeExists = false;
       let actionExp = getActionExp(parseInt(req.params.key));
       let newExp = parseInt(model.exp) + actionExp;
-      console.log(req.body.time);
       if (parseInt(req.params.key) == 200) {
         model.timers.study += parseInt(req.body.time);
       } else if (parseInt(req.params.key) == 300) {
@@ -286,9 +286,10 @@ app.post("/addaction/:key", (req, res) => {
         model.history.push([
           0, Date.now(), 394 + parseInt(req.body.grade), req.body.desc || "A new grade!", "pending"
         ])
+        gradeExists = true;
         console.log(Date.now(), " New grade added for ", user, " -> ", req.body.grade)
-      } 
-      if(parseInt(req.body.grade)< 5 || parseInt(req.body.grade)>10){
+      }
+      if(!gradeExists){
         let historyModel = [
           req.body.time,
           Date.now(),
@@ -298,10 +299,9 @@ app.post("/addaction/:key", (req, res) => {
             ? "approved"
             : "pending"
         ];
-        //TODO
         model.history.push(historyModel);
       }
-
+      console.log("ACTIVITY ::::::", model.history)
       let hours = new Date(Date.now());
       let alreadyAwake = false;
       model.history.forEach(activity => {
