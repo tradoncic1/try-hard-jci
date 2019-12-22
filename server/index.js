@@ -281,21 +281,26 @@ app.post("/addaction/:key", (req, res) => {
         model.timers.rest += parseInt(req.body.time);
       } else if (parseInt(req.params.key) == 700) {
         model.timers.volunteering += parseInt(req.body.time);
-      } else if (parseInt(req.params.key == 300)) {
+      } else if (parseInt(req.params.key) == 400) {
         model.grades.push(req.body.grade);
+        model.history.push([
+          0, Date.now(), 394 + parseInt(req.body.grade), req.body.desc || "A new grade!", "pending"
+        ])
+        console.log(Date.now(), " New grade added for ", user, " -> ", req.body.grade)
+      } 
+      if(parseInt(req.body.grade)< 5 || parseInt(req.body.grade)>10){
+        let historyModel = [
+          req.body.time,
+          Date.now(),
+          parseInt(req.params.key),
+          req.body.desc || "",
+          req.params.key == 300 || req.params.key == 100 || req.params.key == 200
+            ? "approved"
+            : "pending"
+        ];
+        //TODO
+        model.history.push(historyModel);
       }
-      console.log(model.timers);
-      let historyModel = [
-        req.body.time,
-        Date.now(),
-        parseInt(req.params.key),
-        req.body.desc || "",
-        req.params.key == 300 || req.params.key == 100 || req.params.key == 200
-          ? "approved"
-          : "pending"
-      ];
-      //TODO
-      model.history.push(historyModel);
 
       let hours = new Date(Date.now());
       let alreadyAwake = false;
@@ -321,7 +326,7 @@ app.post("/addaction/:key", (req, res) => {
           docs
         );
         console.log("Added new action for ", user);
-        res.send({ response: "OK", status: "EXP added" });
+        res.send({ response: "OK", status: "EXP added"});
       });
     }
   });
