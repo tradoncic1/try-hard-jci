@@ -25,7 +25,6 @@ const EditProfile = props => {
     username: "",
     university: "",
     avatar: "",
-    password: "",
     new_password: ""
   });
   const [wrongPassword, setWrongPassword] = useState(false);
@@ -72,6 +71,10 @@ const EditProfile = props => {
     await profiles
       .update(jwtUsername, input)
       .then(res => {
+        if (res.data.security != "") {
+          setWrongPassword(true);
+          return;
+        }
         localStorage.setItem("jwt", res.data.jwt);
       })
       .catch(error => {
