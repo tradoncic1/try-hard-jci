@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { withRouter, Redirect } from "react-router";
 import auth from "../../api/auth";
 import { parseJwt } from "../../utils";
+import logo from "../../assets/logo/logo.png";
 
 import "./Register.css";
 
@@ -66,7 +67,7 @@ const Register = props => {
       <Row>
         <Col md={6}>
           <div className="Register-Logo-Wrap">
-            <h1>TryHard</h1>
+            <img src={logo} />
           </div>
         </Col>
         <Col md={6}>
