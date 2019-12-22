@@ -5,14 +5,14 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 4200;
 const cors_ = require("cors");
-const path = require('path')
+const path = require("path");
 
 app.use(cors_());
 app.use(bodyParser.json());
 
 let config;
 if (!process.env.HEROKU) {
-    config = require('./config');
+  config = require("./config");
 }
 
 const db = mongojs(process.env.DB_URL || config.DB_URL);
@@ -22,15 +22,96 @@ app.get("/user/:username", (req, res) => {
   db.user.findOne({ username: reqUser }, (error, docs) => {
     if (error) throw error;
     if (docs != null) {
-      console.log(docs);
-      docs.history = docs.history.reverse()
-      docs.history = docs.history.slice(0,10)
+      docs.history = docs.history.reverse();
+      docs.history = docs.history.slice(0, 10);
+      let approvalCheck = [];
+      docs.history.forEach(activity => {
+        if (activity[4] == "approved") {
+          approvalCheck.push(activity);
+        }
+      });
+      docs.history = approvalCheck;
       docs.pw = "ngl, nice try fam";
+      console.log(Date.now(), " User retrieved -> ", docs.username);
       res.json(docs);
     } else {
       res.status(401);
       res.send({ response: "Invalid information provided." });
     }
+  });
+});
+
+app.post("/approveactivity/:username/:time", (req, res) => {
+  let user = req.params.username;
+  let time = parseInt(req.params.time);
+  db.user.findOne({ username: user }, (error, docs) => {
+    if (error) throw error;
+    if (docs) {
+      docs.history.forEach(activity => {
+        if (activity[1] == time) {
+          activity[4] = "approved";
+        }
+      });
+      db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
+        if (errorUpd) throw errorUpd;
+        if (docsUpd) {
+          console.log(Date.now(), " Updated approval ->", user, );
+          res.send({ response: "OK" });
+        } else {
+          res.send({ response: "failed" });
+        }
+      });
+    } else {
+      res.status(404);
+      res.send({ response: "Not Found" });
+    }
+  });
+});
+app.post("/declineactivity/:username/:time", (req, res) => {
+  let user = req.params.username;
+  let time = parseInt(req.params.time);
+  db.user.findOne({ username: user }, (error, docs) => {
+    if (error) throw error;
+    if (docs) {
+      docs.history.map(activity => {
+        if (activity[1] == time) {
+          activity[4] = "declined";
+        }
+      });
+      db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
+        if (errorUpd) throw errorUpd;
+        if (docsUpd) {
+          console.log(Date.now(), " Updated decline for ->", user,);
+          res.send({ response: "OK" });
+        } else {
+          res.send({ response: "failed" });
+        }
+      });
+    } else {
+      res.status(404);
+      res.send({ response: "Not Found" });
+    }
+  });
+});
+app.get("/getapprovals", (req, res) => {
+  let model = [];
+  db.user.find({}, (error, docs) => {
+    docs.map(user => {
+      user.history.map(activity => {
+        if (activity[4] == "pending") {
+          model.push({
+            username: user.username,
+            key: activity[2],
+            description: activity[3],
+            time: activity[1],
+            duration: activity[0]
+          });
+        }
+      });
+    });
+    console.log(Date.now(), " Approval GET: ");
+    model = model.reverse();
+    res.send(model);
   });
 });
 
@@ -60,12 +141,12 @@ app.post("/authenticate", (req, res) => {
           let token = jwt.sign(
             {
               username: req.body.username,
-              type: "user",
+              type: docs.type,
               exp: Math.floor(Date.now() / 1000) + 3600
             },
             process.env.JWT_SECRET || config.JWT_SECRET
           );
-          console.log(model.username, model.pw, docs);
+          console.log(Date.now(), " Login for ->", model.username);
           res.send({ response: "OK", jwt: token });
         }
       } else {
@@ -83,6 +164,8 @@ app.post("/registration", (req, res) => {
     surname: req.body.surname,
     username: req.body.username,
     dob: req.body.dob,
+    type: req.body.type,
+    phone: req.body.phone || "None provided",
     email: req.body.email || "None provided",
     pw: req.body.pw,
     university: req.body.university,
@@ -97,7 +180,7 @@ app.post("/registration", (req, res) => {
     history: [[]],
     achiev: []
   };
-  console.log(model);
+  console.log(Date.now(), " Registered -> ", model.username);
   db.user.findOne({ email: req.body.email }, (error, docs) => {
     if (error) throw error;
     if (docs) {
@@ -170,10 +253,10 @@ app.post("/updateuser/:username", (req, res) => {
           let token = jwt.sign(
             {
               username: docs.username,
-              type: "user",
+              type: docs.type,
               exp: Math.floor(Date.now() / 1000) + 3600
             },
-            config.JWT_SECRET
+            process.env.JWT_SECRET || config.JWT_SECRET
           );
           console.log(user, " has been successfuly updated.");
           res.send({ response: "OK", jwt: token });
@@ -190,7 +273,7 @@ app.post("/addaction/:key", (req, res) => {
       let model = docs;
       let actionExp = getActionExp(parseInt(req.params.key));
       let newExp = parseInt(model.exp) + actionExp;
-      console.log(req.body.time)
+      console.log(req.body.time);
       if (parseInt(req.params.key) == 200) {
         model.timers.study += parseInt(req.body.time);
       } else if (parseInt(req.params.key) == 300) {
@@ -200,12 +283,13 @@ app.post("/addaction/:key", (req, res) => {
       } else if (parseInt(req.params.key == 300)) {
         model.grades.push(req.body.grade);
       }
-      console.log(model.timers)
+      console.log(model.timers);
       let historyModel = [
         req.body.time,
         Date.now(),
         parseInt(req.params.key),
-        req.body.desc || ""
+        req.body.desc || "",
+        "pending"
       ];
 
       model.history.push(historyModel);
@@ -261,9 +345,9 @@ app.get("/getleaderboard/:skip", (req, res) => {
       }
     });
 });
-app.use(express.static(path.join(__dirname, '../client/build')))
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 app.listen(PORT, () => {
