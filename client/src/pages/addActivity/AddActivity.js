@@ -1,38 +1,16 @@
 import React, { useState, useCallback, useEffect } from "react";
 import {
-  Form,
-  FormGroup,
   Input,
   Col,
-  Button,
   Label,
   Row,
-  Container,
-  FormText,
-  Card,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText
+  Spinner
 } from "reactstrap";
-import auth from "../../api/auth";
 import "./AddActivity.css";
-import ReactBodymovin from "react-bodymovin";
-import NavBar from "../../components/navBar/NavBar";
-import study from "../../assets/anim-json/study";
-import rest from "../../assets/anim-json/rest";
-import volunteer from "../../assets/anim-json/volunteer";
-import grade from "../../assets/anim-json/grade";
-import check from "../../assets/anim-json/check";
-import heart from "../../assets/anim-json/heart";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import { parseJwt } from "../../utils";
 import addAction from "../../api/addAction";
-import { Router, Redirect, withRouter } from "react-router";
+import { withRouter } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
@@ -54,7 +32,9 @@ const AddActivity = props => {
       !localStorage.getItem("jwt") ||
       parseJwt(localStorage.getItem("jwt")).exp <= Math.floor(Date.now() / 1000)
     ) {
-      props.history.push("/login");
+      setTimeout(() =>
+      props.history.push("/login")
+      , 1500)
       return;
     }
   }, []);
@@ -68,12 +48,14 @@ const AddActivity = props => {
 
     await addAction
       .get(userActivity, model)
-      .then(res => {
+      .then(() => {
         setFinished(true);
 
         setTime(0);
         setUserDesc("");
         setUserActivity(0);
+
+        props.history.push("/profile");
       })
       .catch(err => {
         console.log(err);
