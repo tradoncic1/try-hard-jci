@@ -226,13 +226,14 @@ app.post("/updateuser/:username", (req, res) => {
   let user = req.params.username;
   let model = req.body;
   let wrong_pw = false;
+  let warn = ""
   db.user.findOne({ username: user }, (error, docs) => {
     if (error) throw error;
     if (docs) {
       if (docs.username != model.username) {
         docs.username = model.username;
       }
-      if (docs.pw != model.new_password && model.password == docs.pw) {
+      if (docs.pw != model.new_password && model.pw == docs.pw) {
         docs.pw = model.new_password;
       } else {
         wrong_pw = true;
@@ -245,8 +246,7 @@ app.post("/updateuser/:username", (req, res) => {
       }
       if (wrong_pw) {
         console.log("Failed user update for ", user);
-        res.status(406);
-        res.send({ response: "password" });
+        warn = "password"
       }
       db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
         if (errorUpd) throw error;
@@ -260,7 +260,7 @@ app.post("/updateuser/:username", (req, res) => {
             process.env.JWT_SECRET || config.JWT_SECRET
           );
           console.log(user, " has been successfuly updated.");
-          res.send({ response: "OK", jwt: token });
+          res.send({ response: "OK", jwt: token, security: warn});
         }
       });
     }
