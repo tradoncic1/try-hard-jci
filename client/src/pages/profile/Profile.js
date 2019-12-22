@@ -108,15 +108,15 @@ const Profile = props => {
                 </div>
                 <div className="Profile-Timers">
                   <div>
-                    <h2>{profileInfo.timers.study}</h2>
+                    <h2>{profileInfo.timers.study}h</h2>
                     <span>Studying</span>
                   </div>
                   <div>
-                    <h2>{profileInfo.timers.rest}</h2>
+                    <h2>{profileInfo.timers.rest}h</h2>
                     <span>Rest</span>
                   </div>
                   <div>
-                    <h2>{profileInfo.timers.volunteering}</h2>
+                    <h2>{profileInfo.timers.volunteering}h</h2>
                     <span>Volunteer</span>
                   </div>
                 </div>
