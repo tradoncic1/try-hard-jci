@@ -4,10 +4,14 @@
   background-color: purple;
 }
 
-.Register-Wrap .col-md-5 {
+.Register-Wrap .col-md- {
   padding-left: 0px !important;
 }
 .Register-Wrap .col-md-7 {
+  padding-right: 0px !important;
+}
+.Register-Wrap .col-md-6 {
+  padding-left: 0px !important;
   padding-right: 0px !important;
 }
 
@@ -28,7 +32,7 @@
 .Register-Form {
   position: absolute;
   left: 17.5%;
-  top: 5%;
+  top: 2.5%;
   width: 65%;
   background-color: white;
   border-radius: 4px;

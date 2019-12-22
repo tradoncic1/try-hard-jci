@@ -65,13 +65,10 @@ const AddActivity = props => {
       desc: userDesc
     };
 
-    console.log(model, userActivity);
-
     await addAction
       .get(userActivity, model)
       .then(res => {
         setFinished(true);
-        console.log(res.data);
 
         setTime(0);
         setUserDesc("");

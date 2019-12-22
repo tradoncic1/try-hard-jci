@@ -42,6 +42,8 @@ const Profile = props => {
       setIsLoading(true);
       if (props.match.params.username) {
         profileResponse = await profiles.get(props.match.params.username);
+        if (profileResponse.data.type == 1) props.history.push("/admin");
+
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
         historyRev = profileResponse.data.history.reverse();
@@ -49,10 +51,11 @@ const Profile = props => {
         profileResponse = await profiles.get(
           parseJwt(localStorage.getItem("jwt")).username
         );
+        if (profileResponse.data.type == 1) props.history.push("/adminPage");
+
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
         historyRev = profileResponse.data.history;
-        console.log(profileResponse.data);
       }
 
       setProfileInfo(profileResponse.data);
