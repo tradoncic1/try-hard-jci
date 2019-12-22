@@ -52,6 +52,9 @@ const Profile = props => {
         levelCalc = parseInt(profileResponse.data.exp / 75) + 1;
         xpCalc = profileResponse.data.exp - parseInt((levelCalc - 1) * 75);
         historyRev = profileResponse.data.history.reverse();
+        console.log(historyRev);
+
+        console.log(profileResponse.data);
       }
 
       setProfileInfo(profileResponse.data);

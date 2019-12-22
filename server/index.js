@@ -83,9 +83,9 @@ app.post("/registration", (req, res) => {
     exp: 0,
     activity: 1,
     timers: {
-        study: 0,
-        rest: 0,
-        volunteering: 0
+      study: 0,
+      rest: 0,
+      volunteering: 0
     },
     grades: [],
     history: [[]],
@@ -134,85 +134,88 @@ app.post("/deletehistory", (req, res) => {
 app.post("/updateuser/:username", (req, res) => {
   let user = req.params.username;
   let model = req.body;
-    let wrong_pw = false;
+  let wrong_pw = false;
   db.user.findOne({ username: user }, (error, docs) => {
     if (error) throw error;
     if (docs) {
-        if (docs.username != model.username) {
-          docs.username = model.username;
+      if (docs.username != model.username) {
+        docs.username = model.username;
+      }
+      if (docs.pw != model.new_password && model.password == docs.pw) {
+        docs.pw = model.new_password;
+      } else {
+        wrong_pw = true;
+      }
+      if (docs.email != model.email) {
+        docs.email = model.email;
+      }
+      if (docs.university != model.university) {
+        docs.university = model.university;
+      }
+      if (wrong_pw) {
+        console.log("Failed user update for ", user);
+        res.status(406);
+        res.send({ response: "password" });
+      }
+      db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
+        if (errorUpd) throw error;
+        if (docsUpd) {
+          let token = jwt.sign(
+            {
+              username: docs.username,
+              type: "user",
+              exp: Math.floor(Date.now() / 1000) + 3600
+            },
+            config.JWT_SECRET
+          );
+          console.log(user, " has been successfuly updated.");
+          res.send({ response: "OK", jwt: token });
         }
-        if (docs.pw != model.new_password && model.password == docs.pw) {
-          docs.pw = model.new_password;
-        } else {
-            wrong_pw = true;
-        }
-        if (docs.email != model.email) {
-          docs.email = model.email;
-        }
-        if (docs.university != model.university) {
-          docs.university = model.university;
-        }
-        if(wrong_pw){
-          console.log("Failed user update for ", user);
-          res.status(406);
-          res.send({ response: "password"});
-        }
-        db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
-          if (errorUpd) throw error;
-          if (docsUpd) {
-            let token = jwt.sign(
-              {
-                username: docs.username,
-                type: "user",
-                exp: Math.floor(Date.now() / 1000) + 3600
-              },
-              config.JWT_SECRET
-            );
-            console.log(user, " has been successfuly updated.");
-            res.send({ response: "OK", jwt: token});
-          }
-        });
+      });
     }
   });
 });
 app.post("/addaction/:key", (req, res) => {
-    let user = req.body.username;
-    db.user.findOne({ username: user }, (error, docs) => {
-      if (error) throw error;
-      if (docs) {
-        let model = docs;
-        let actionExp = getActionExp(parseInt(req.params.key)); 
-        let newExp = parseInt(model.exp) + actionExp;
+  let user = req.body.username;
+  db.user.findOne({ username: user }, (error, docs) => {
+    if (error) throw error;
+    if (docs) {
+      let model = docs;
+      let actionExp = getActionExp(parseInt(req.params.key));
+      let newExp = parseInt(model.exp) + actionExp;
 
-        if(parseInt(req.params.key) == 200){
-            model.timers.study += req.body.time
-        }else if(parseInt(req.params.key) == 300){
-            model.timers.rest += req.body.time
-        }else if(parseInt(req.params.key) == 700){
-            model.timers.volunteering += req.body.time
-        }else if(parseInt(req.params.key == 300)){
-            model.grades.push(req.body.grade)
-        }
-
-        let historyModel = [
-            req.body.time,
-          parseInt(req.params.key),
-          req.body.desc
-        ]; 
-        model.history.push(historyModel);
-        db.user.replaceOne({ username: user }, model, (error, docs) => {
-          if (error) throw error;
-          console.log(
-            "Set exp for action: ",
-            req.params.key,
-            "New exp: ",
-            newExp
-          );
-          console.log("Added new action for ", user)
-          res.send({ response: "OK", status: "EXP added" });
-        });
+      if (parseInt(req.params.key) == 200) {
+        model.timers.study += req.body.time;
+      } else if (parseInt(req.params.key) == 300) {
+        model.timers.rest += req.body.time;
+      } else if (parseInt(req.params.key) == 700) {
+        model.timers.volunteering += req.body.time;
+      } else if (parseInt(req.params.key == 300)) {
+        model.grades.push(req.body.grade);
       }
-    });
+
+      let historyModel = [
+        req.body.time,
+        Date.now(),
+        parseInt(req.params.key),
+        req.body.desc
+      ];
+      model.history.push(historyModel);
+      model.exp = newExp;
+      db.user.replaceOne({ username: user }, model, (error, docs) => {
+        if (error) throw error;
+        console.log(
+          "Set exp for action: ",
+          req.params.key,
+          "New exp: ",
+          newExp,
+          docs
+        );
+        console.log("Added new action for ", user);
+        res.send({ response: "OK", status: "EXP added" });
+      });
+    }
+  });
 });
 app.get("/addachiev/:key", (req, res) => {
   let user = "hamdij4"; //req.body.username
@@ -255,8 +258,7 @@ app.listen(PORT, () => {
   console.log("Backend on port : ", PORT);
 });
 
-function checkAchiev(model){
-}
+function checkAchiev(model) {}
 
 function getActionExp(reqKey) {
   if (reqKey == 100) {

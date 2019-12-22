@@ -25,6 +25,8 @@ const Login = props => {
   const handleSubmit = async e => {
     e.preventDefault();
 
+    console.log(input);
+
     await auth.login(input).then(res => {
       localStorage.setItem("jwt", res.data.jwt);
     });

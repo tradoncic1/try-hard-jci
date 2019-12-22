@@ -65,7 +65,7 @@ const AddActivity = props => {
       desc: userDesc
     };
 
-    console.log(model);
+    console.log(model, userActivity);
 
     await addAction
       .get(userActivity, model)
