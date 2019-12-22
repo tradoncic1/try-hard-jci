@@ -55,7 +55,7 @@ app.post("/approveactivity/:username/:time", (req, res) => {
       db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
         if (errorUpd) throw errorUpd;
         if (docsUpd) {
-          console.log(Date.now(), " Updated approval ->", user, );
+          console.log(Date.now(), " Updated approval ->", user);
           res.send({ response: "OK" });
         } else {
           res.send({ response: "failed" });
@@ -81,7 +81,7 @@ app.post("/declineactivity/:username/:time", (req, res) => {
       db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
         if (errorUpd) throw errorUpd;
         if (docsUpd) {
-          console.log(Date.now(), " Updated decline for ->", user,);
+          console.log(Date.now(), " Updated decline for ->", user);
           res.send({ response: "OK" });
         } else {
           res.send({ response: "failed" });
@@ -346,9 +346,6 @@ app.get("/getleaderboard/:skip", (req, res) => {
     });
 });
 app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
 
 app.listen(PORT, () => {
   console.log("Backend on port : ", PORT);
