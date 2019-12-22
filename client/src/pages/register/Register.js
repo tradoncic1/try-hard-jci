@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Form, FormGroup, Input, Col, Row, Button, Label } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  Row,
+  Button,
+  Label,
+  FormFeedback
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import { withRouter, Redirect } from "react-router";
 import auth from "../../api/auth";
@@ -8,6 +17,7 @@ import { parseJwt } from "../../utils";
 import "./Register.css";
 
 const Register = props => {
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const [input, setInput] = useState({
     name: "",
     surname: "",
@@ -36,6 +46,10 @@ const Register = props => {
         state: { user: res.data.user }
       });
     });
+  };
+
+  const isEmailValid = () => {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.email);
   };
 
   return localStorage.getItem("jwt") &&
@@ -89,7 +103,9 @@ const Register = props => {
                     id="email"
                     placeholder="example@mail.com"
                     onChange={handleInput}
+                    invalid={input.email.length > 0 && isEmailValid}
                   />
+                  <FormFeedback>Please enter a valid email</FormFeedback>
                 </FormGroup>
                 <Row form>
                   <Col md={6}>
@@ -137,7 +153,20 @@ const Register = props => {
                 </FormGroup>
 
                 <Col className="Register-ButtonCol">
-                  <Button type="submit" color="primary" onClick={handleSubmit}>
+                  <Button
+                    disabled={
+                      !input.dob ||
+                      !input.email ||
+                      !input.name ||
+                      !input.surname ||
+                      !input.dob ||
+                      !input.password ||
+                      !input.university
+                    }
+                    type="submit"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
                     register
                   </Button>
                 </Col>

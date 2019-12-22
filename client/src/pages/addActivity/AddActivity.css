@@ -74,10 +74,11 @@
   justify-content: center;
   align-items: center;
   font-size: 64px;
+  opacity: 0.75;
   transition: opacity 0.25s ease;
 }
 .AddActivity-Submit:hover {
-  opacity: 0.75;
+  opacity: 1;
 }
 .AddActivity-Submit span {
   transition: color 2s ease;
