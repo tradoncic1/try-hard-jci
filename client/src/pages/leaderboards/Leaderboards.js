@@ -28,15 +28,13 @@ const Leaderboards = props => {
         setFirst(res.data[0]);
         setSecond(res.data[1]);
         setThird(res.data[2]);
-        setUsers(res.data.slice(2));
+        setUsers(res.data.slice(3));
       });
       setIsLoading(false);
     };
 
     fetchLeaderboards();
   }, []);
-
-  console.log(users);
 
   return (
     <div className="Leaderboards">

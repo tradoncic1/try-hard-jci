@@ -17,9 +17,7 @@ const NavBar = props => {
     localStorage.removeItem("jwt");
   };
 
-  console.log(parseJwt(localStorage.getItem("jwt")));
-
-  const itemsMarkup =
+  const itemsMarkup = localStorage.getItem("jwt") ? (
     parseJwt(localStorage.getItem("jwt")).type == 1 ? (
       <div className="NavBar-Items">
         <div className="NavBar-Item" onClick={handleCollapseClose}>
@@ -51,7 +49,8 @@ const NavBar = props => {
           </Link>
         </div>
       </div>
-    );
+    )
+  ) : null;
 
   return props.history.location.pathname == "/login" ||
     props.history.location.pathname == "/register" ||
