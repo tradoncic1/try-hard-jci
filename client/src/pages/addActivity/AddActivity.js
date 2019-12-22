@@ -38,7 +38,8 @@ import {
   faBook,
   faBed,
   faPeopleCarry,
-  faGlasses
+  faGlasses,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 const AddActivity = props => {
@@ -99,6 +100,8 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faBook} />
               Study
+              {userActivity == 200 ?
+              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
             </Col>
             <Col
               xs={6}
@@ -107,6 +110,8 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faBed} />
               Rest
+              {userActivity == 300 ?
+              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
             </Col>
           </Row>
           <Row className="AddActivity-RowMinor">
@@ -117,6 +122,8 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faPeopleCarry} />
               Volunteer
+              {userActivity == 700 ?
+              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
             </Col>
             <Col
               xs={6}
@@ -125,6 +132,8 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faGlasses} />
               Grade
+              {userActivity == 400 ?
+              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
             </Col>
           </Row>
         </Col>
