@@ -3,15 +3,18 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const PORT = 4200;
+const PORT = process.env.PORT || 4200;
 const cors_ = require("cors");
 
 app.use(cors_());
 app.use(bodyParser.json());
 
-let config = require("./config");
+let config;
+if (!process.env.HEROKU) {
+    config = require('./config');
+}
 
-const db = mongojs(config.DB_URL);
+const db = mongojs(process.env.DB_URL || config.DB_URL);
 
 app.get("/user/:username", (req, res) => {
   let reqUser = req.params.username;
@@ -19,6 +22,8 @@ app.get("/user/:username", (req, res) => {
     if (error) throw error;
     if (docs != null) {
       console.log(docs);
+      docs.history = docs.history.reverse()
+      docs.history = docs.history.slice(0,10)
       docs.pw = "ngl, nice try fam";
       res.json(docs);
     } else {
@@ -57,7 +62,7 @@ app.post("/authenticate", (req, res) => {
               type: "user",
               exp: Math.floor(Date.now() / 1000) + 3600
             },
-            config.JWT_SECRET
+            process.env.JWT_SECRET || config.JWT_SECRET
           );
           console.log(model.username, model.pw, docs);
           res.send({ response: "OK", jwt: token });
@@ -131,6 +136,7 @@ app.post("/deletehistory", (req, res) => {
     }
   });
 });
+
 app.post("/updateuser/:username", (req, res) => {
   let user = req.params.username;
   let model = req.body;
@@ -183,23 +189,24 @@ app.post("/addaction/:key", (req, res) => {
       let model = docs;
       let actionExp = getActionExp(parseInt(req.params.key));
       let newExp = parseInt(model.exp) + actionExp;
-
+      console.log(req.body.time)
       if (parseInt(req.params.key) == 200) {
-        model.timers.study += req.body.time;
+        model.timers.study += parseInt(req.body.time);
       } else if (parseInt(req.params.key) == 300) {
-        model.timers.rest += req.body.time;
+        model.timers.rest += parseInt(req.body.time);
       } else if (parseInt(req.params.key) == 700) {
-        model.timers.volunteering += req.body.time;
+        model.timers.volunteering += parseInt(req.body.time);
       } else if (parseInt(req.params.key == 300)) {
         model.grades.push(req.body.grade);
       }
-
+      console.log(model.timers)
       let historyModel = [
         req.body.time,
         Date.now(),
         parseInt(req.params.key),
-        req.body.desc
+        req.body.desc || ""
       ];
+
       model.history.push(historyModel);
       model.exp = newExp;
       db.user.replaceOne({ username: user }, model, (error, docs) => {
