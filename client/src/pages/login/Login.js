@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Form, FormGroup, Input, Col, Button, Label, Row } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  Button,
+  Label,
+  Row,
+  FormFeedback
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import { withRouter, Redirect } from "react-router";
 import auth from "../../api/auth";
@@ -13,6 +22,8 @@ const Login = props => {
     password: props.location.state ? props.location.state.user.pw : ""
   });
 
+  const [error, setError] = useState(false);
+
   const handleInput = event => {
     const eventName = event.target.name;
     const eventValue = event.target.value;
@@ -24,12 +35,19 @@ const Login = props => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setError(false);
 
-    await auth.login(input).then(res => {
-      localStorage.setItem("jwt", res.data.jwt);
-    });
-
-    props.history.push("/profile");
+    await auth
+      .login(input)
+      .then(res => {
+        localStorage.setItem("jwt", res.data.jwt);
+        props.history.push("/profile");
+      })
+      .catch(e => {
+        setError(true);
+        console.log(e);
+        return;
+      });
   };
 
   const { username, password } = input;
@@ -72,18 +90,22 @@ const Login = props => {
                       placeholder="password"
                       value={password}
                       onChange={handleInput}
+                      invalid={error}
                     />
+                    <FormFeedback>That user doesn't exist!</FormFeedback>
                   </FormGroup>
                 </Col>
                 <Col className="Login-ButtonCol">
-                  <Button
-                    disabled={!username || !password}
-                    type="submit"
-                    color="primary"
-                    onClick={handleSubmit}
-                  >
-                    log in
-                  </Button>
+                  <FormGroup>
+                    <Button
+                      disabled={!username || !password}
+                      type="submit"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      log in
+                    </Button>
+                  </FormGroup>
                 </Col>
                 <br />
                 <br />

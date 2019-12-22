@@ -15,6 +15,11 @@
   padding-right: 0px !important;
 }
 
+.Register-Error {
+  color: red;
+  margin-bottom: 12px;
+}
+
 .Register-Logo-Wrap {
   width: 100%;
   min-height: 100vh;

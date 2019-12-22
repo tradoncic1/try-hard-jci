@@ -30,6 +30,7 @@ const Register = props => {
     password: "",
     type: 2
   });
+  const [error, setError] = useState(false);
 
   const handleInput = event => {
     const eventName = event.target.name;
@@ -43,13 +44,17 @@ const Register = props => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    setError(false);
 
-    auth.register(input).then(res => {
-      props.history.push({
-        pathname: "/login",
-        state: { user: res.data.user }
-      });
-    });
+    auth
+      .register(input)
+      .then(res => {
+        props.history.push({
+          pathname: "/login",
+          state: { user: res.data.user }
+        });
+      })
+      .catch(error => setError(true));
   };
 
   const isEmailValid = emailRegex.test(input.email);
@@ -188,6 +193,11 @@ const Register = props => {
                     register
                   </Button>
                 </Col>
+                {error ? (
+                  <div className="Register-Error">
+                    That user already exists!
+                  </div>
+                ) : null}
                 <div>
                   Already have an account?
                   <br />
