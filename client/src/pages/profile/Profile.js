@@ -23,7 +23,7 @@ const Profile = props => {
   const [experience, setExperience] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
     const fetchProfile = async () => {
       if (
@@ -95,7 +95,7 @@ const Profile = props => {
                   <h2>
                     {profileInfo.name} {profileInfo.surname}
                   </h2>
-                  <p>Title</p>
+                  <p>Student extraordinare</p>
                 </div>
                 <div className="Profile-Progression">
                   <div className="Profile-ProgressionText">

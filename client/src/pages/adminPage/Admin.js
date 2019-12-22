@@ -72,6 +72,9 @@ function AdminPage(props) {
     <>
       <div className="AdminPage">
         <Row>
+          <Col md={12} className="Title">pending approval</Col>
+        </Row>
+        <Row>
           <Col md={2}></Col>
           <Col md={8} className="ApprovalContainer">
             {isLoading ? (
