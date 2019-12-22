@@ -289,7 +289,9 @@ app.post("/addaction/:key", (req, res) => {
         Date.now(),
         parseInt(req.params.key),
         req.body.desc || "",
-        "pending"
+        req.params.key == 300 || req.params.key == 100 || req.params.key == 200
+          ? "approved"
+          : "pending"
       ];
 
       model.history.push(historyModel);

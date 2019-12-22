@@ -18,7 +18,7 @@ const getBaseUrl = () => {
   var baseUrl =
     getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split("/")[1];
   if (baseUrl.includes("3000") || baseUrl.includes("4200")) {
-    baseUrl = "http://192.168.1.104:4200";
+    baseUrl = "http://localhost:4200";
   } else {
     baseUrl = baseUrl.substring(0, baseUrl.length - 1);
   }
