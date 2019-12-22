@@ -18,6 +18,7 @@ if (!process.env.HEROKU) {
 const db = mongojs(process.env.DB_URL || config.DB_URL);
 
 app.get("/user/:username", (req, res) => {
+  console.log(Date.now()/360000)
   let reqUser = req.params.username;
   db.user.findOne({ username: reqUser }, (error, docs) => {
     if (error) throw error;
@@ -293,7 +294,7 @@ app.post("/addaction/:key", (req, res) => {
           ? "approved"
           : "pending"
       ];
-
+      //TODO
       model.history.push(historyModel);
       model.exp = newExp;
       db.user.replaceOne({ username: user }, model, (error, docs) => {
@@ -352,7 +353,9 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 app.listen(PORT, () => {
   console.log("Backend on port : ", PORT);
 });
-
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 function checkAchiev(model) {}
 
 function getActionExp(reqKey) {
