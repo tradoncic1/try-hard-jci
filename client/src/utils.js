@@ -48,7 +48,7 @@ export const historyMap = (activity, index) => {
         <ListGroupItem key={index}>
           <div>
             <FontAwesomeIcon icon={faMugHot} />
-            Woke up on time!
+            Woke up on time! <span style={{color:"gray", marginLeft:"10px "}}>Well met!</span>
           </div>
           <div>{moment(activity[1]).fromNow()}</div>
         </ListGroupItem>
@@ -58,7 +58,7 @@ export const historyMap = (activity, index) => {
         <ListGroupItem key={index}>
           <div>
             <FontAwesomeIcon icon={faBook} />
-            Worked hard!
+            Worked hard! <span style={{color:"gray", marginLeft:"10px "}}>{activity[3]}</span>
           </div>
           <div>{moment(activity[1]).fromNow()}</div>
         </ListGroupItem>
@@ -68,7 +68,7 @@ export const historyMap = (activity, index) => {
         <ListGroupItem key={index}>
           <div>
             <FontAwesomeIcon icon={faBed} />
-            Took some time to rest
+            Took some time to rest  <span style={{color:"gray", marginLeft:"10px "}}>{activity[3]}</span>
           </div>
           <div>{moment(activity[1]).fromNow()}</div>
         </ListGroupItem>
@@ -78,7 +78,7 @@ export const historyMap = (activity, index) => {
         <ListGroupItem key={index}>
           <div>
             <FontAwesomeIcon icon={faGlasses} />
-            Got a 6 from a class
+            Got a 6 from a class 
           </div>
           <div>{moment(activity[1]).fromNow()}</div>
         </ListGroupItem>

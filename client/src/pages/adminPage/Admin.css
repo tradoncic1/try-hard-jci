@@ -56,3 +56,13 @@
   justify-content: center;
   align-items: center;
 }
+.Title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  color: white;
+  font-size: 52px;
+  font-weight: 600;
+}

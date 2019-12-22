@@ -99,6 +99,15 @@
   opacity: 0.75;
 }
 
+.AddActivity-Spinner {
+  position: absolute;
+  height: 250px;
+  width: 250px;
+  top: 50vh;
+  left: 50vw;
+  font-size: 250px;
+}
+
 @media screen and (max-width: 768px) {
   .AddActivity-Description {
     padding-right: 30px !important;
