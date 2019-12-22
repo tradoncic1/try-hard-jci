@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router";
+import logo from "../../assets/logo/logo.png";
 
 import "./NavBar.css";
 import { parseJwt } from "../../utils";
@@ -58,7 +59,9 @@ const NavBar = props => {
     <div className="NavBar-Wrapper">
       <div className="NavBar">
         <div className="NavBar-Home">
-          <Link to="/">TryHard</Link>
+          <Link to="/">
+            <img src={logo} style={{ maxHeight: "75px" }} />
+          </Link>
         </div>
         <div className="NavBar-Collapsable">
           <FontAwesomeIcon

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { withRouter, Redirect } from "react-router";
 import auth from "../../api/auth";
 import { parseJwt } from "../../utils";
-
+import logo from "../../assets/logo/logo.png";
 import "./Login.css";
 
 const Login = props => {
@@ -43,7 +43,7 @@ const Login = props => {
       <Row>
         <Col md={7}>
           <div className="Login-Logo-Wrap">
-            <h1>TryHard</h1>
+            <img src={logo} />
           </div>
         </Col>
         <Col md={5}>
