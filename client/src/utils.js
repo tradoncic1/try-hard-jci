@@ -155,4 +155,163 @@ export const historyMap = (activity, index) => {
       );
   }
 };
+
+export const historyMapAdmin = (activity, index) => {
+  switch (activity.key) {
+    case 100:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faMugHot} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Woke up on time!
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 200:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBook} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Worked hard!
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 300:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBed} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Took some time to rest
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 400:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got a 6 from a class
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 401:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got a 7 from a class
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 402:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got an 8 from a class
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 403:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got a 9 from a class
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 404:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faGlasses} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got a 10 from a class!
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 500:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faCalendarCheck} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Got to the end of the semester!
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 600:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faBook} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Was active for 5 consecutive days
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+    case 700:
+      return (
+        <div key={index}>
+          <div>
+            <FontAwesomeIcon icon={faPeopleCarry} />
+            {"  "}
+            <b>{activity.username}</b>
+            {"  "}
+            Participated in volunteer work
+          </div>
+          <div>{activity.description}</div>
+          <div>{moment(activity.time).fromNow()}</div>
+        </div>
+      );
+  }
+};
 export const BASE_URL = getBaseUrl();

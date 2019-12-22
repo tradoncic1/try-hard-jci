@@ -12,8 +12,37 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.ApprovalContainer ul {
+  margin-top: 15px;
+  width: 100%;
+}
+.ApprovalContainer li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ApprovalContainer li span {
+  margin: 5px;
+}
+
+.Admin-Icons {
+  display: flex;
+  flex-direction: column;
+}
+
+.Admin-Icons svg {
+  cursor: pointer;
+  margin: 5px;
+}
+
+.Admin-Icons svg:hover {
+  color: gray;
 }
 
 .ApprovalHolder {

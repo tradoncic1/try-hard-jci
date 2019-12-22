@@ -24,7 +24,9 @@ const Register = props => {
     dob: "",
     email: "",
     pw: "",
-    university: ""
+    university: "",
+    username: "",
+    password: ""
   });
 
   const handleInput = event => {
@@ -48,9 +50,12 @@ const Register = props => {
     });
   };
 
-  const isEmailValid = () => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.email);
-  };
+  const isEmailValid = emailRegex.test(input.email);
+
+  const inputsInvalid =
+    !input.name || !input.surname || !input.username || !input.password
+      ? true
+      : false;
 
   return localStorage.getItem("jwt") &&
     parseJwt(localStorage.getItem("jwt")).exp >
@@ -59,12 +64,12 @@ const Register = props => {
   ) : (
     <div className="Register-Wrap">
       <Row>
-        <Col md={7}>
+        <Col md={6}>
           <div className="Register-Logo-Wrap">
             <h1>TryHard</h1>
           </div>
         </Col>
-        <Col md={5}>
+        <Col md={6}>
           <div className="Register-Form-Wrap">
             <div className="Register-Form">
               <h2>register</h2>
@@ -103,7 +108,7 @@ const Register = props => {
                     id="email"
                     placeholder="example@mail.com"
                     onChange={handleInput}
-                    invalid={input.email.length > 0 && isEmailValid}
+                    invalid={input.email.length > 0 && !isEmailValid}
                   />
                   <FormFeedback>Please enter a valid email</FormFeedback>
                 </FormGroup>
@@ -142,36 +147,44 @@ const Register = props => {
                     onChange={handleInput}
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Label>university of study</Label>
-                  <Input
-                    type="text"
-                    name="university"
-                    id="university"
-                    onChange={handleInput}
-                  />
-                </FormGroup>
-
+                <Row>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label>university of study</Label>
+                      <Input
+                        type="text"
+                        name="university"
+                        id="university"
+                        onChange={handleInput}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label>position</Label>
+                      <Input
+                        type="select"
+                        name="type"
+                        id="type"
+                        onChange={handleInput}
+                      >
+                        <option value={2}>Student</option>
+                        <option value={1}>Professor</option>
+                      </Input>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {input.type == 1 ? (
+                  <FormGroup>
+                    <Label>phone number</Label>
+                    <Input name="phone" id="phone" onChange={handleInput} />
+                  </FormGroup>
+                ) : null}
                 <Col className="Register-ButtonCol">
-                  <Button
-                    disabled={
-                      !input.dob ||
-                      !input.email ||
-                      !input.name ||
-                      !input.surname ||
-                      !input.dob ||
-                      !input.password ||
-                      !input.university
-                    }
-                    type="submit"
-                    color="primary"
-                    onClick={handleSubmit}
-                  >
+                  <Button type="submit" color="primary" onClick={handleSubmit}>
                     register
                   </Button>
                 </Col>
-                <br />
-                <br />
                 <div>
                   Already have an account?
                   <br />

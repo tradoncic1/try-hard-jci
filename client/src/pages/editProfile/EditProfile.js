@@ -72,7 +72,6 @@ const EditProfile = props => {
     await profiles
       .update(jwtUsername, input)
       .then(res => {
-        console.log(res.data);
         localStorage.setItem("jwt", res.data.jwt);
       })
       .catch(error => {
