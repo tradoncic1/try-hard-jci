@@ -18,7 +18,7 @@ if (!process.env.HEROKU) {
 const db = mongojs(process.env.DB_URL || config.DB_URL);
 
 app.get("/user/:username", (req, res) => {
-  console.log(Date.now()/360000)
+  console.log(Date.now() / 360000);
   let reqUser = req.params.username;
   db.user.findOne({ username: reqUser }, (error, docs) => {
     if (error) throw error;
@@ -296,6 +296,20 @@ app.post("/addaction/:key", (req, res) => {
       ];
       //TODO
       model.history.push(historyModel);
+
+      let hours = new Date(Date.now());
+      let alreadyAwake = false;
+      model.history.forEach(activity => {
+        let activeHours = new Date(activity[1])
+          if(activity[2] == 100 && activeHours.getDay() == hours.getDay() && activeHours.getMonth() == hours.getMonth()){
+            console.log("ALLREEAAADYYY AWWAAAKEEE")
+            alreadyAwake = true;
+          }
+      });
+      if (parseInt(hours.getHours()) <= 7 && alreadyAwake == false) {
+        let wokeUp = [0, Date.now(), 100, "Woke up on time", "approved"];
+        model.history.push(wokeUp);
+      }
       model.exp = newExp;
       db.user.replaceOne({ username: user }, model, (error, docs) => {
         if (error) throw error;
@@ -353,11 +367,10 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 app.listen(PORT, () => {
   console.log("Backend on port : ", PORT);
 });
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 function checkAchiev(model) {}
-
 function getActionExp(reqKey) {
   if (reqKey == 100) {
     return 5;

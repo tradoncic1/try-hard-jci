@@ -34,7 +34,7 @@ const AddActivity = props => {
     ) {
       setTimeout(() =>
       props.history.push("/login")
-      , 1500)
+      , 1500) 
       return;
     }
   }, []);
