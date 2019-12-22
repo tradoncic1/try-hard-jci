@@ -36,8 +36,6 @@ const Leaderboards = props => {
     fetchLeaderboards();
   }, []);
 
-  console.log(users);
-
   return (
     <div className="Leaderboards">
       <Row>
