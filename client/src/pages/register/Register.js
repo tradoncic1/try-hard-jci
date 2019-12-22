@@ -27,7 +27,8 @@ const Register = props => {
     pw: "",
     university: "",
     username: "",
-    password: ""
+    password: "",
+    type: 1
   });
 
   const handleInput = event => {
@@ -170,7 +171,7 @@ const Register = props => {
                         onChange={handleInput}
                       >
                         <option value={2}>Student</option>
-                        <option value={1}>Professor</option>
+                        <option value={1}>Admin</option>
                       </Input>
                     </FormGroup>
                   </Col>

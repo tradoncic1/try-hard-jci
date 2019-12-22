@@ -1,11 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import {
-  Input,
-  Col,
-  Label,
-  Row,
-  Spinner
-} from "reactstrap";
+import { Input, Col, Label, Row, Spinner } from "reactstrap";
 import "./AddActivity.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { parseJwt } from "../../utils";
@@ -26,15 +20,14 @@ const AddActivity = props => {
   const [userDesc, setUserDesc] = useState("");
   const [time, setTime] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [grade, setGrade] = useState(0);
 
   useEffect(() => {
     if (
       !localStorage.getItem("jwt") ||
       parseJwt(localStorage.getItem("jwt")).exp <= Math.floor(Date.now() / 1000)
     ) {
-      setTimeout(() =>
-      props.history.push("/login")
-      , 1500)
+      setTimeout(() => props.history.push("/login"), 1500);
       return;
     }
   }, []);
@@ -43,12 +36,13 @@ const AddActivity = props => {
     let model = {
       username: parseJwt(localStorage.getItem("jwt")).username,
       time: time,
-      desc: userDesc
+      desc: userDesc,
+      grade: grade
     };
 
     await addAction
       .get(userActivity, model)
-      .then(() => {
+      .then(res => {
         setFinished(true);
 
         setTime(0);
@@ -70,6 +64,11 @@ const AddActivity = props => {
     setUserDesc(event.target.value);
   });
 
+  const handleGrade = event => {
+    console.log(event.target.value);
+    setGrade(event.target.value);
+  };
+
   return (
     <div className="AddActivity">
       <Row className="AddActivity-Row">
@@ -82,8 +81,9 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faBook} />
               Study
-              {userActivity == 200 ?
-              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
+              {userActivity == 200 ? (
+                <FontAwesomeIcon icon={faCheck} style={{ fontSize: "32px" }} />
+              ) : null}
             </Col>
             <Col
               xs={6}
@@ -92,8 +92,9 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faBed} />
               Rest
-              {userActivity == 300 ?
-              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
+              {userActivity == 300 ? (
+                <FontAwesomeIcon icon={faCheck} style={{ fontSize: "32px" }} />
+              ) : null}
             </Col>
           </Row>
           <Row className="AddActivity-RowMinor">
@@ -104,8 +105,9 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faPeopleCarry} />
               Volunteer
-              {userActivity == 700 ?
-              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
+              {userActivity == 700 ? (
+                <FontAwesomeIcon icon={faCheck} style={{ fontSize: "32px" }} />
+              ) : null}
             </Col>
             <Col
               xs={6}
@@ -114,8 +116,9 @@ const AddActivity = props => {
             >
               <FontAwesomeIcon icon={faGlasses} />
               Grade
-              {userActivity == 400 ?
-              ( <FontAwesomeIcon icon={faCheck} style={{fontSize: "32px"}}/>):(null)}
+              {userActivity == 400 ? (
+                <FontAwesomeIcon icon={faCheck} style={{ fontSize: "32px" }} />
+              ) : null}
             </Col>
           </Row>
         </Col>
@@ -149,7 +152,13 @@ const AddActivity = props => {
           ) : (
             <div>
               What grade did you get?
-              <Input type="number" min={5} max={10} onChange={handleTime} />
+              <Input
+                type="number"
+                min={5}
+                max={10}
+                name="grade"
+                onChange={handleGrade}
+              />
               <span style={{ fontSize: "18px" }}></span>
             </div>
           )}

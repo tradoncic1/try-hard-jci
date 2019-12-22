@@ -72,7 +72,9 @@ function AdminPage(props) {
     <>
       <div className="AdminPage">
         <Row>
-          <Col md={12} className="Title">pending approval</Col>
+          <Col md={12} className="Title">
+            pending approval
+          </Col>
         </Row>
         <Row>
           <Col md={2}></Col>
@@ -82,6 +84,7 @@ function AdminPage(props) {
             ) : (
               <ListGroup>
                 {requests.map(request => {
+                  console.log(request);
                   return (
                     <ListGroupItem>
                       {historyMapAdmin(request)}
