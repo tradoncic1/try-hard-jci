@@ -18,7 +18,6 @@ if (!process.env.HEROKU) {
 const db = mongojs(process.env.DB_URL || config.DB_URL);
 
 app.get("/user/:username", (req, res) => {
-  console.log(Date.now() / 360000);
   let reqUser = req.params.username;
   db.user.findOne({ username: reqUser }, (error, docs) => {
     if (error) throw error;
@@ -33,7 +32,7 @@ app.get("/user/:username", (req, res) => {
       });
       docs.history = approvalCheck;
       docs.pw = "ngl, nice try fam";
-      console.log(Date.now(), " User retrieved -> ", docs.username);
+      console.log(getDate(Date.now()), " User logged in : ", docs.username);
       res.json(docs);
     } else {
       res.status(401);
@@ -56,9 +55,10 @@ app.post("/approveactivity/:username/:time", (req, res) => {
       db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
         if (errorUpd) throw errorUpd;
         if (docsUpd) {
-          console.log(Date.now(), " Updated approval ->", user);
+          console.log(getDate(Date.now()), " Activity approved for : ", user);
           res.send({ response: "OK" });
         } else {
+          res.status(401)
           res.send({ response: "failed" });
         }
       });
@@ -82,9 +82,10 @@ app.post("/declineactivity/:username/:time", (req, res) => {
       db.user.replaceOne({ username: user }, docs, (errorUpd, docsUpd) => {
         if (errorUpd) throw errorUpd;
         if (docsUpd) {
-          console.log(Date.now(), " Updated decline for ->", user);
+          console.log(getDate(Date.now()), " Activity declined for : ", user);
           res.send({ response: "OK" });
         } else {
+          res.status(401)
           res.send({ response: "failed" });
         }
       });
@@ -110,7 +111,7 @@ app.get("/getapprovals", (req, res) => {
         }
       });
     });
-    console.log(Date.now(), " Approval GET: ");
+    console.log(getDate(Date.now()), " Approval history requested for :  ", user.username);
     model = model.reverse();
     res.send(model);
   });
@@ -147,7 +148,7 @@ app.post("/authenticate", (req, res) => {
             },
             process.env.JWT_SECRET || config.JWT_SECRET
           );
-          console.log(Date.now(), " Login for ->", model.username);
+          console.log(getDate(Date.now()), " New login : ", model.username);
           res.send({ response: "OK", jwt: token });
         }
       } else {
@@ -181,7 +182,7 @@ app.post("/registration", (req, res) => {
     history: [[]],
     achiev: []
   };
-  console.log(Date.now(), " Registered -> ", model.username);
+  console.log(getDate(Date.now()), " New user registered : ", model.username);
   db.user.findOne({ email: req.body.email }, (error, docs) => {
     if (error) throw error;
     if (docs) {
@@ -259,7 +260,7 @@ app.post("/updateuser/:username", (req, res) => {
             },
             process.env.JWT_SECRET || config.JWT_SECRET
           );
-          console.log(user, " has been successfuly updated.");
+          console.log(getDate(Date.now()), " Updated account info for : ", model.username);
           res.send({ response: "OK", jwt: token, security: warn});
         }
       });
@@ -287,7 +288,7 @@ app.post("/addaction/:key", (req, res) => {
           0, Date.now(), 394 + parseInt(req.body.grade), req.body.desc || "A new grade!", "pending"
         ])
         gradeExists = true;
-        console.log(Date.now(), " New grade added for ", user, " -> ", req.body.grade)
+        console.log(getDate(Date.now()), " New grade added for ", user, " -> ", req.body.grade)
       }
       if(!gradeExists){
         let historyModel = [
@@ -301,13 +302,12 @@ app.post("/addaction/:key", (req, res) => {
         ];
         model.history.push(historyModel);
       }
-      console.log("ACTIVITY ::::::", model.history)
       let hours = new Date(Date.now());
       let alreadyAwake = false;
       model.history.forEach(activity => {
         let activeHours = new Date(activity[1])
           if(activity[2] == 100 && activeHours.getDay() == hours.getDay() && activeHours.getMonth() == hours.getMonth()){
-            console.log("ALLREEAAADYYY AWWAAAKEEE")
+            console.log(getDate(Date.now()), " User achieved daily wake up reward: ", model.username)
             alreadyAwake = true;
           }
       });
@@ -325,7 +325,7 @@ app.post("/addaction/:key", (req, res) => {
           newExp,
           docs
         );
-        console.log("Added new action for ", user);
+        console.log(getDate(Date.now()), "Added new action for ", user);
         res.send({ response: "OK", status: "EXP added"});
       });
     }
@@ -363,7 +363,7 @@ app.get("/getleaderboard/:skip", (req, res) => {
           modelArray.push(model);
         });
         res.send(modelArray);
-        console.log("Leaderboard fetched");
+        console.log(getDate(Date.now())," Leaderboard fetched");
       }
     });
 });
@@ -375,7 +375,10 @@ app.listen(PORT, () => {
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
-function checkAchiev(model) {}
+function getDate(millis){
+  let date_ = new Date(millis)
+  return date_;
+}
 function getActionExp(reqKey) {
   if (reqKey == 100) {
     return 5;
