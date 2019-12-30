@@ -7,3 +7,6 @@ Test user :
  Test admin: 
   username : hamdij4
   password: hashme
+
+
+Created for the EESTEC JustCodeIt 2019 24-hour Hackathon
