@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose --coverage --forceExit --watchAll --maxWorkers=1"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +18,15 @@
     "mongojs": "^3.1.0",
     "nodejs": "0.0.0",
     "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
