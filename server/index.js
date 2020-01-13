@@ -34,7 +34,7 @@ app.get("/user/:username", (req, res) => {
       docs.history = approvalCheck;
       docs.pw = "ngl, nice try fam";
       console.log(getDate(Date.now()), " User logged in : ", docs.username);
-      res.status(200)
+      res.status(200);
       res.json(docs);
     } else {
       res.status(401);
@@ -59,7 +59,7 @@ app.post("/approveactivity/:username/:time", (req, res) => {
         if (docsUpd) {
           console.log(getDate(Date.now()), " Activity approved for : ", user);
           res.send({ response: "OK" });
-          res.status(200)
+          res.status(200);
         } else {
           res.status(401);
           res.send({ response: "failed" });
@@ -86,8 +86,8 @@ app.post("/declineactivity/:username/:time", (req, res) => {
         if (errorUpd) throw errorUpd;
         if (docsUpd) {
           console.log(getDate(Date.now()), " Activity declined for : ", user);
-          res.send({ response: "OK", status: "declined"});
-          res.status(200)
+          res.send({ response: "OK", status: "declined" });
+          res.status(200);
         } else {
           res.status(401);
           res.send({ response: "failed" });
@@ -102,7 +102,11 @@ app.post("/declineactivity/:username/:time", (req, res) => {
 app.get("/getapprovals", (req, res) => {
   let model = [];
   db.user.find({}, (error, docs) => {
-    console.log(getDate(Date.now()), " Approval history requested for :  ", docs.username);
+    console.log(
+      getDate(Date.now()),
+      " Approval history requested for :  ",
+      docs.username
+    );
     docs.map(user => {
       user.history.map(activity => {
         if (activity[4] == "pending") {
@@ -116,17 +120,14 @@ app.get("/getapprovals", (req, res) => {
         }
       });
     });
-<<<<<<< HEAD
-=======
     console.log(
       getDate(Date.now()),
       " Approval history requested for :  ",
       model.username
     );
->>>>>>> e1cb4dd484a063f15767c6da9ed8ed958ad5c58e
     model = model.reverse();
     res.send(model);
-    res.status(200)
+    res.status(200);
   });
 });
 
@@ -150,6 +151,7 @@ app.post("/authenticate", (req, res) => {
   db.user.findOne(
     { $and: [{ username: model.username }, { pw: model.password }] },
     (error, docs) => {
+      console.log(docs);
       if (error) throw error;
       if (docs) {
         if (model.username == docs.username && model.password == docs.pw) {
@@ -162,8 +164,8 @@ app.post("/authenticate", (req, res) => {
             process.env.JWT_SECRET || config.JWT_SECRET
           );
           console.log(getDate(Date.now()), " New login : ", model.username);
-          res.status(202)
           res.send({ response: "OK", jwt: token });
+          res.status(200);
         }
       } else {
         res.status(401);
@@ -213,7 +215,7 @@ app.post("/registration", (req, res) => {
           db.user.insertOne(model, (error, docs) => {
             if (error) throw error;
             console.log("Successful register. Obj: ", docs);
-            res.status(200)
+            res.status(200);
             res.send({ response: "User created", user: docs });
           });
         }
@@ -274,20 +276,17 @@ app.post("/updateuser/:username", (req, res) => {
             },
             process.env.JWT_SECRET || config.JWT_SECRET
           );
-<<<<<<< HEAD
-          console.log(getDate(Date.now()), " Updated account info for : ", model.username);
-          res.send({ response: "OK", jwt: token, security: warn, model: docs});
-          res.status(200)
-=======
           console.log(
             getDate(Date.now()),
             " Updated account info for : ",
             model.username
           );
-          res.send({ response: "OK", jwt: token, security: warn });
->>>>>>> e1cb4dd484a063f15767c6da9ed8ed958ad5c58e
+          res.send({ response: "OK", jwt: token, security: warn, model: docs });
+          res.status(200);
         }
       });
+    } else {
+      res.status(401);
     }
   });
 });
@@ -370,12 +369,8 @@ app.post("/addaction/:key", (req, res) => {
           docs
         );
         console.log(getDate(Date.now()), "Added new action for ", user);
-<<<<<<< HEAD
-        res.status(200)
-        res.send({ response: "OK", status: "EXP added", activity: model});
-=======
-        res.send({ response: "OK", status: "EXP added" });
->>>>>>> e1cb4dd484a063f15767c6da9ed8ed958ad5c58e
+        res.status(200);
+        res.send({ response: "OK", status: "EXP added", activity: model });
       });
     }
   });
@@ -390,16 +385,16 @@ app.get("/addachiev/:key", (req, res) => {
   });
 });
 app.delete("/removetestuser", (req, res) => {
-  try{
-    db.user.remove({username: "JestTester"})
-    console.log(getDate(Date.now()), "Test User Deleted")
-    res.send({response: "User deleted"})
-    res.status(200)
-  } catch (e){
-    res.status(400)
-    console.log(e)
+  try {
+    db.user.remove({ username: "JestTester" });
+    console.log(getDate(Date.now()), "Test User Deleted");
+    res.send({ response: "User deleted" });
+    res.status(200);
+  } catch (e) {
+    res.status(400);
+    console.log(e);
   }
-})
+});
 app.get("/getleaderboard/:skip", (req, res) => {
   let limit = 15;
   let skip = parseInt(req.params.skip) || 0;
